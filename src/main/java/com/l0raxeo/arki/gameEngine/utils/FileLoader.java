@@ -19,7 +19,7 @@ import java.util.ArrayList;
         }
 )
 public class FileLoader
-{//test
+{
 
     /**
      * Reads first line in file with associated path specified.
