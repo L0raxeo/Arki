@@ -55,7 +55,16 @@ public class FileLoader
      */
     public static ArrayList<String> readAllLinesFromFile(String path) throws IOException
     {
-        BufferedReader br = new BufferedReader(new FileReader(path));
+        BufferedReader br;
+
+        try
+        {
+            br = new BufferedReader(new FileReader(path));
+        }
+        catch (FileNotFoundException e)
+        {
+            return null;
+        }
 
         String line;
         ArrayList<String> allLines = new ArrayList<>();
@@ -117,6 +126,12 @@ public class FileLoader
     public static void writeFile(String path, String data, int line) throws IOException
     {
         ArrayList<String> oldFileContent = readAllLinesFromFile(path);
+
+        if (oldFileContent == null)
+        {
+            System.out.println("File does not exist");
+            return;
+        }
 
         BufferedWriter bw = new BufferedWriter(new FileWriter(path));
 
