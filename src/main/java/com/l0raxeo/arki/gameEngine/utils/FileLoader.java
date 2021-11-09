@@ -105,4 +105,72 @@ public class FileLoader
         bw.close();
     }
 
+    /**
+     * Writes specified data to line in file associated
+     * path.
+     *
+     * @param path of file being written in.
+     * @param data being written into file.
+     * @param line that the data is being written on.
+     * @throws IOException if there is an "in" exception.
+     */
+    public static void writeFile(String path, String data, int line) throws IOException
+    {
+        ArrayList<String> oldFileContent = readAllLinesFromFile(path);
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+
+        System.out.println(oldFileContent.size());
+
+        if (line > oldFileContent.size())
+        {
+            for (int i = 0; i < line - 1; i++)
+            {
+                if (i < oldFileContent.size())
+                {
+                    bw.write(oldFileContent.get(i));
+                }
+
+                bw.newLine();
+            }
+
+            bw.write(data);
+        }
+        else if (line < oldFileContent.size())
+        {
+            for (int i = 0; i < oldFileContent.size(); i++)
+            {
+                if (i == line - 1)
+                {
+                    bw.write(data);
+                }
+                else
+                {
+                    bw.write(oldFileContent.get(i));
+                }
+
+                if (i < oldFileContent.size() - 1)
+                    bw.newLine();
+            }
+        }
+        else // if (line == oldFileContent.size())
+        {
+            for (int i = 0; i < oldFileContent.size(); i++)
+            {
+                if (i != oldFileContent.size() - 1)
+                    bw.write(oldFileContent.get(i));
+                else
+                {
+                    bw.write(data);
+                    break;
+                }
+
+                bw.newLine();
+            }
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
 }
