@@ -1,6 +1,8 @@
 package com.l0raxeo.arki.gameEngine.utils;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -26,7 +28,6 @@ public class FileLoader
      *
      * @param path the path of the file.
      * @return the read string of the file.
-     * @throws IOException if there is an "out" exception.
      */
     public static String readFile(String path) throws IOException
     {
@@ -39,7 +40,6 @@ public class FileLoader
      *
      * @param file being read.
      * @return the first line in the file.
-     * @throws IOException if there is an "out" exception.
      */
     public static String readFile(File file) throws IOException
     {
@@ -48,10 +48,39 @@ public class FileLoader
     }
 
     /**
+     * Reads specified line in specified file.
+     *
+     * @param path to file being read.
+     * @param lineNum of line being returned.
+     * @return content of line in specified file.
+     */
+    public static String readLine(String path, int lineNum) throws IOException
+    {
+        BufferedReader br;
+        String line;
+        ArrayList<String> allLines = new ArrayList<>();
+
+        try
+        {
+            br = new BufferedReader(new FileReader(path));
+        }
+        catch (FileNotFoundException e)
+        {
+            return null;
+        }
+
+        while ((line = br.readLine()) != null)
+        {
+            allLines.add(line);
+        }
+
+        return allLines.get(lineNum - 1);
+    }
+
+    /**
      * Reads each line in a text file
      * @param path of the file
      * @return all lines of the text file (in form of array list), separated into different indexes in the array list
-     * @throws IOException traced back to initialization method in Mark Core
      */
     public static ArrayList<String> readAllLinesFromFile(String path) throws IOException
     {
@@ -82,7 +111,6 @@ public class FileLoader
      *
      * @param path the path of the file being modified.
      * @param data the data that is being written into the specified file.
-     * @throws IOException if there is an "in" exception.
      */
     public static void writeFile(String path, String data) throws IOException
     {
@@ -98,7 +126,6 @@ public class FileLoader
      *
      * @param path to file being modified
      * @param dataPerLine unbound array of data per line
-     * @throws IOException if there is an "in" exception
      */
     public static void writeFile(String path, String... dataPerLine) throws IOException
     {
@@ -121,7 +148,6 @@ public class FileLoader
      * @param path of file being written in.
      * @param data being written into file.
      * @param line that the data is being written on.
-     * @throws IOException if there is an "in" exception.
      */
     public static void writeFile(String path, String data, int line) throws IOException
     {
@@ -186,6 +212,31 @@ public class FileLoader
 
         bw.flush();
         bw.close();
+    }
+
+    /**
+     * Creates a directory with the path specified in the parameters.
+     *
+     * @param path to directory being created
+     */
+    public static void createDir(String path)
+    {
+        File newDir = new File(path);
+
+        if (!newDir.exists())
+        {
+            if (!newDir.mkdirs())
+            {
+                try
+                {
+                    throw new IOException();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }
