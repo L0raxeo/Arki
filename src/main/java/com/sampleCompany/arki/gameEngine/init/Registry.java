@@ -21,12 +21,25 @@ import java.util.ArrayList;
 public class Registry
 {
 
+    /**
+     * Stores all initializers that need to be executed during
+     * initialization sequence.
+     */
     private static final ArrayList<Initializer> allInitializers = new ArrayList<>();
 
+    /**
+     * Adds the specified initializer to the list of
+     * initialization processes that need to be executed.
+     *
+     * Must be used for all initialization sequences in
+     * both the game engine, and the game being created.
+     */
     public static void addInitializer(Initializer obj)
     {
         allInitializers.add(obj);
     }
+
+    // Loops through all initializers and invokes each appropriate process.
 
     public static void preInit() throws Exception
     {
