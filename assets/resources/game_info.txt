@@ -1,0 +1,3 @@
+name=Sample Game
+gameid=sampleGame
+version=1.0

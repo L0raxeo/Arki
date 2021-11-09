@@ -1,6 +1,6 @@
-package com.l0raxeo.arki.gameEngine.display;
+package com.sampleCompany.arki.gameEngine.display;
 
-import com.l0raxeo.arki.gameEngine.utils.VersionInfo;
+import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 /**
  * The display is the application window,

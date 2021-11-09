@@ -1,8 +1,6 @@
-package com.l0raxeo.arki.gameEngine.utils;
+package com.sampleCompany.arki.gameEngine.utils;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**

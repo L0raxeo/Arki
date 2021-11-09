@@ -1,6 +1,6 @@
-package com.l0raxeo.arki.gameEngine.init;
+package com.sampleCompany.arki.gameEngine.init;
 
-import com.l0raxeo.arki.gameEngine.utils.VersionInfo;
+import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 /**
  * This interface is used to implement

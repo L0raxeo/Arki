@@ -1,4 +1,4 @@
-package com.l0raxeo.sampleGame;
+package com.sampleCompany.sampleGame;
 
 public class Reference
 {

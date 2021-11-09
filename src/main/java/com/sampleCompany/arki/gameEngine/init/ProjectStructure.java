@@ -1,8 +1,8 @@
-package com.l0raxeo.arki.gameEngine.init;
+package com.sampleCompany.arki.gameEngine.init;
 
-import com.l0raxeo.arki.gameEngine.utils.FileLoader;
-import com.l0raxeo.arki.gameEngine.utils.VersionInfo;
-import com.l0raxeo.sampleGame.Reference;
+import com.sampleCompany.arki.gameEngine.utils.FileLoader;
+import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
+import com.sampleCompany.sampleGame.Reference;
 
 import java.io.IOException;
 
@@ -43,7 +43,7 @@ public class ProjectStructure implements Initializer
     @Override
     public void init() throws IOException
     {
-        FileLoader.writeFile("assets/resources/game_info.txt", Reference.NAME, Reference.GAMEID, Reference.VERSION);
+        FileLoader.writeFile("assets/resources/game_info.txt", "name=" + Reference.NAME, "gameid=" + Reference.GAMEID, "version=" + Reference.VERSION);
     }
 
 }

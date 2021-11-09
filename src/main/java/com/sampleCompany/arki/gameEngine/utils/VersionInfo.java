@@ -1,4 +1,4 @@
-package com.l0raxeo.arki.gameEngine.utils;
+package com.sampleCompany.arki.gameEngine.utils;
 
 import java.lang.annotation.Documented;
 

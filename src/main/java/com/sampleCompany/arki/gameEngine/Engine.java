@@ -1,12 +1,9 @@
-package com.l0raxeo.arki.gameEngine;
+package com.sampleCompany.arki.gameEngine;
 
-import com.l0raxeo.arki.gameEngine.init.Initializer;
-import com.l0raxeo.arki.gameEngine.init.ProjectStructure;
-import com.l0raxeo.arki.gameEngine.utils.VersionInfo;
-import com.l0raxeo.sampleGame.Reference;
-
-import java.io.IOException;
-import java.util.ServiceLoader;
+import com.sampleCompany.arki.gameEngine.init.ProjectStructure;
+import com.sampleCompany.arki.gameEngine.init.Registry;
+import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
+import com.sampleCompany.sampleGame.Reference;
 
 /**
  * The main engine of Arki, where
@@ -33,37 +30,41 @@ public class Engine implements Runnable
     // Class
     public Engine() {}
 
-    // All init sequences of this class invoke the initializers.
-
-    private void preInit() throws Exception
+    /**
+     * Registers initializers that are part of the game engine.
+     */
+    private void registerEngineInitializers()
     {
-        for (Initializer i : Application.getAllInitializers())
-        {
-            i.preInit();
-        }
+        Registry.addInitializer(new ProjectStructure());
     }
 
-    private void init() throws Exception
-    {
-        for (Initializer i : Application.getAllInitializers())
-        {
-            i.init();
-        }
-    }
-
-    private void postInit() throws Exception
-    {
-        for (Initializer i : Application.getAllInitializers())
-        {
-            i.postInit();
-        }
-    }
-
+    /**
+     * Updates all associated classes/objects with
+     * a tick method.
+     *
+     * When moving an object across the screen, two
+     * processes take place: position update, change
+     * rendering. First, the object's position is
+     * updated, in the form of a variable. This position
+     * is then rendered to the screen in real time.
+     * The order is as such: 1) tick 2) render.
+     */
     private void tick()
     {
 
     }
 
+    /**
+     * Draws all specified components to the screen,
+     * who have the required information to do so.
+     *
+     * When moving an object across the screen, two
+     * processes take place: position update, change
+     * rendering. First, the object's position is
+     * updated, in the form of a variable. This position
+     * is then rendered to the screen in real time.
+     * The order is as such: 1) tick 2) render.
+     */
     private void render()
     {
 
@@ -71,15 +72,19 @@ public class Engine implements Runnable
 
     /**
      * Loop method for thread.
+     *
+     * Invokes init sequences.
      */
     @Override
     public void run()
     {
+        registerEngineInitializers();
+
         try
         {
-            preInit();
-            init();
-            postInit();
+            Registry.preInit();
+            Registry.init();
+            Registry.postInit();
         }
         catch (Exception e)
         {

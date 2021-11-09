@@ -1,7 +1,7 @@
-package com.l0raxeo.arki.gameEngine.init;
+package com.sampleCompany.arki.gameEngine.init;
 
-import com.l0raxeo.arki.gameEngine.Engine;
-import com.l0raxeo.arki.gameEngine.utils.VersionInfo;
+import com.sampleCompany.arki.gameEngine.Engine;
+import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 /**
  * Origin of the program. Creates new instance
