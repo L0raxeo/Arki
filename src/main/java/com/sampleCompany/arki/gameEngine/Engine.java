@@ -31,6 +31,8 @@ public class Engine implements Runnable
     private Thread thread;
     private boolean running = false;
 
+    public static KeyManager keyManager;
+
     // Class
     public Engine() {}
 
@@ -56,7 +58,10 @@ public class Engine implements Runnable
      */
     private void tick()
     {
+        keyManager.tick();
 
+        if (KeyManager.isHeld(KeyEvent.VK_E))
+            System.out.println("held");
     }
 
     /**

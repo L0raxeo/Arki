@@ -4,5 +4,6 @@ public enum KeyState
 {
     HELD,
     PRESSED,
-    RELEASED
+    RELEASED,
+    IDLE
 }
