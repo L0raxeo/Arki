@@ -2,8 +2,12 @@ package com.sampleCompany.arki.gameEngine;
 
 import com.sampleCompany.arki.gameEngine.init.ProjectStructure;
 import com.sampleCompany.arki.gameEngine.init.Registry;
+import com.sampleCompany.arki.gameEngine.init.Window;
+import com.sampleCompany.arki.gameEngine.input.KeyManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import com.sampleCompany.sampleGame.Reference;
+
+import java.awt.event.KeyEvent;
 
 /**
  * The main engine of Arki, where
@@ -36,6 +40,7 @@ public class Engine implements Runnable
     private void registerEngineInitializers()
     {
         Registry.addInitializer(new ProjectStructure());
+        Registry.addInitializer(new Window());
     }
 
     /**
