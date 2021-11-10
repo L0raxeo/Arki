@@ -28,7 +28,7 @@ public class Key
     public Key(int key, KeyState state)
     {
         this.keyCode = key;
-        this.state = state;
+        this.queuedState = state;
     }
 
     public void setState()

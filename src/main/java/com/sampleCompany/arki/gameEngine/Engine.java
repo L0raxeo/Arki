@@ -60,8 +60,11 @@ public class Engine implements Runnable
     {
         keyManager.tick();
 
-        if (KeyManager.isHeld(KeyEvent.VK_E))
-            System.out.println("held");
+        if (KeyManager.onPress(KeyEvent.VK_E))
+            System.out.println("pressed");
+
+        if (KeyManager.onRelease(KeyEvent.VK_E))
+            System.out.println("released");
     }
 
     /**
