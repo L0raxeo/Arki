@@ -4,6 +4,7 @@ import com.sampleCompany.arki.gameEngine.Engine;
 import com.sampleCompany.arki.gameEngine.display.Display;
 import com.sampleCompany.arki.gameEngine.input.KeyManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
+import com.sampleCompany.sampleGame.Reference;
 
 /**
  * Manages all keys, and can be used to
@@ -22,9 +23,6 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 )
 public class Window implements Initializer
 {
-
-    private Display display;
-
     @Override
     public void preInit()
     {
@@ -34,13 +32,13 @@ public class Window implements Initializer
     @Override
     public void init()
     {
-        display = new Display("Test Window", 1080, 720);
+        Engine.display = new Display(Reference.NAME, Reference.displayWidth, Reference.displayHeight);
     }
 
     @Override
     public void postInit()
     {
-        display.getFrame().addKeyListener(Engine.keyManager);
+        Engine.display.getFrame().addKeyListener(Engine.keyManager);
     }
 
 }

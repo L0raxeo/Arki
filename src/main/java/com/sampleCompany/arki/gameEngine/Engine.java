@@ -1,5 +1,6 @@
 package com.sampleCompany.arki.gameEngine;
 
+import com.sampleCompany.arki.gameEngine.display.Display;
 import com.sampleCompany.arki.gameEngine.init.ProjectStructure;
 import com.sampleCompany.arki.gameEngine.init.Registry;
 import com.sampleCompany.arki.gameEngine.init.Window;
@@ -7,7 +8,9 @@ import com.sampleCompany.arki.gameEngine.input.KeyManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import com.sampleCompany.sampleGame.Reference;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferStrategy;
 
 /**
  * The main engine of Arki, where
@@ -19,7 +22,7 @@ import java.awt.event.KeyEvent;
  */
 @VersionInfo (
         version = "1.0",
-        releaseDate = "11/9/2021",
+        releaseDate = "11/10/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -27,6 +30,8 @@ import java.awt.event.KeyEvent;
 )
 public class Engine implements Runnable
 {
+
+    public static Display display;
 
     private Thread thread;
     private boolean running = false;
@@ -80,7 +85,22 @@ public class Engine implements Runnable
      */
     private void render()
     {
+        BufferStrategy bs = display.getCanvas().getBufferStrategy();
 
+        if (bs == null)
+        {
+            display.getCanvas().createBufferStrategy(3);
+            return;
+        }
+
+        Graphics g = bs.getDrawGraphics();
+        // clear screen
+        g.clearRect(0, 0, Reference.displayWidth, Reference.displayHeight);
+        // draw here
+
+        // end drawing
+        bs.show();
+        g.dispose();
     }
 
     /**
