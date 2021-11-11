@@ -5,6 +5,7 @@ import com.sampleCompany.arki.gameEngine.init.ProjectStructure;
 import com.sampleCompany.arki.gameEngine.init.Registry;
 import com.sampleCompany.arki.gameEngine.init.Window;
 import com.sampleCompany.arki.gameEngine.input.KeyManager;
+import com.sampleCompany.arki.gameEngine.utils.FileLoader;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import com.sampleCompany.sampleGame.Reference;
 
@@ -90,6 +91,8 @@ public class Engine implements Runnable
         // clear screen
         g.clearRect(0, 0, Reference.displayWidth, Reference.displayHeight);
         // draw here
+
+        g.drawImage(FileLoader.loadImage("/assets/sample_texture.png"), 0, 0, 292, 88, null);
 
         // end drawing
         bs.show();

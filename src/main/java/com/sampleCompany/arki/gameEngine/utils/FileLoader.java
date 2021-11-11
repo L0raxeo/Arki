@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * File loader used to load IO files.
@@ -240,16 +241,15 @@ public class FileLoader
     }
 
     /**
-     *
-     * @param path is the specific path to the .png file
-     * @return
-     * Returns loaded image with attribute {path}
+     * Gives the buffered image form of the file
+     * associated with the path specified in the
+     * parameters.
      */
     public static BufferedImage loadImage(String path)
     {
         try
         {
-            return ImageIO.read(new File(path));
+            return ImageIO.read(Objects.requireNonNull(FileLoader.class.getResource(path)));
         }
         catch (IOException e)
         {

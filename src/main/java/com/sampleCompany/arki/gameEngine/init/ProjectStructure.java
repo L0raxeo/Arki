@@ -32,7 +32,7 @@ public class ProjectStructure implements Initializer
     @Override
     public void preInit()
     {
-        FileLoader.createDir("assets/resources");
+        FileLoader.createDir("libs/resources");
     }
 
     /**
@@ -42,7 +42,7 @@ public class ProjectStructure implements Initializer
     @Override
     public void init() throws IOException
     {
-        FileLoader.writeFile("assets/resources/game_info.txt", "name=" + Reference.NAME, "gameid=" + Reference.GAMEID, "version=" + Reference.VERSION);
+        FileLoader.writeFile("libs/resources/game_info.txt", "name=" + Reference.NAME, "gameid=" + Reference.GAMEID, "version=" + Reference.VERSION);
     }
 
 }
