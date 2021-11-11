@@ -65,12 +65,6 @@ public class Engine implements Runnable
     private void tick()
     {
         keyManager.tick();
-
-        if (KeyManager.onPress(KeyEvent.VK_E))
-            System.out.println("pressed");
-
-        if (KeyManager.onRelease(KeyEvent.VK_E))
-            System.out.println("released");
     }
 
     /**
@@ -98,8 +92,6 @@ public class Engine implements Runnable
         // clear screen
         g.clearRect(0, 0, Reference.displayWidth, Reference.displayHeight);
         // draw here
-
-        g.drawImage(FileLoader.loadImage("assets/sample_texture.png"), 0, 0, 292, 88, null);
 
         // end drawing
         bs.show();
