@@ -4,7 +4,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * File loader used to load IO files.
@@ -15,7 +14,7 @@ import java.util.Objects;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/8/2021",
+        releaseDate = "11/10/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"

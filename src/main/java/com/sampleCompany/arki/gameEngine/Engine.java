@@ -5,12 +5,10 @@ import com.sampleCompany.arki.gameEngine.init.ProjectStructure;
 import com.sampleCompany.arki.gameEngine.init.Registry;
 import com.sampleCompany.arki.gameEngine.init.Window;
 import com.sampleCompany.arki.gameEngine.input.KeyManager;
-import com.sampleCompany.arki.gameEngine.utils.FileLoader;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import com.sampleCompany.sampleGame.Reference;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 
 /**
