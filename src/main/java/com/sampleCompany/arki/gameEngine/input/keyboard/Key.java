@@ -1,4 +1,4 @@
-package com.sampleCompany.arki.gameEngine.input;
+package com.sampleCompany.arki.gameEngine.input.keyboard;
 
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
@@ -11,7 +11,7 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/10/2021",
+        releaseDate = "11/11/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"

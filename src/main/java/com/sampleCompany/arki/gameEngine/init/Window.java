@@ -2,7 +2,8 @@ package com.sampleCompany.arki.gameEngine.init;
 
 import com.sampleCompany.arki.gameEngine.Engine;
 import com.sampleCompany.arki.gameEngine.display.Display;
-import com.sampleCompany.arki.gameEngine.input.KeyManager;
+import com.sampleCompany.arki.gameEngine.input.keyboard.KeyManager;
+import com.sampleCompany.arki.gameEngine.input.mouse.MouseManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import com.sampleCompany.sampleGame.Reference;
 
@@ -15,7 +16,7 @@ import com.sampleCompany.sampleGame.Reference;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/10/2021",
+        releaseDate = "11/11/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -27,6 +28,7 @@ public class Window implements Initializer
     public void preInit()
     {
         Engine.keyManager = new KeyManager();
+        Engine.mouseManager = new MouseManager();
     }
 
     @Override
@@ -39,6 +41,7 @@ public class Window implements Initializer
     public void postInit()
     {
         Engine.display.getFrame().addKeyListener(Engine.keyManager);
+        Engine.display.getFrame().addMouseListener(Engine.mouseManager);
     }
 
 }

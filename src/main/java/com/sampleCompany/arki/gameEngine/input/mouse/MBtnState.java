@@ -1,21 +1,21 @@
-package com.sampleCompany.arki.gameEngine.input;
+package com.sampleCompany.arki.gameEngine.input.mouse;
 
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 /**
- * All states that a key can inherit.
+ * All states that a mouse button can inherit.
  *
  * @author Lorcan A. Cheng
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/10/2021",
+        releaseDate = "11/11/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
         }
 )
-public enum KeyState
+public enum MBtnState
 {
     HELD,
     PRESSED,

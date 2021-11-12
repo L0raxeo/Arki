@@ -4,8 +4,8 @@ import com.sampleCompany.arki.gameEngine.display.Display;
 import com.sampleCompany.arki.gameEngine.init.ProjectStructure;
 import com.sampleCompany.arki.gameEngine.init.Registry;
 import com.sampleCompany.arki.gameEngine.init.Window;
-import com.sampleCompany.arki.gameEngine.input.KeyManager;
-import com.sampleCompany.arki.gameEngine.utils.FileLoader;
+import com.sampleCompany.arki.gameEngine.input.keyboard.KeyManager;
+import com.sampleCompany.arki.gameEngine.input.mouse.MouseManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import com.sampleCompany.sampleGame.Reference;
 
@@ -22,7 +22,7 @@ import java.awt.image.BufferStrategy;
  */
 @VersionInfo (
         version = "1.0",
-        releaseDate = "11/10/2021",
+        releaseDate = "11/11/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -31,12 +31,16 @@ import java.awt.image.BufferStrategy;
 public class Engine implements Runnable
 {
 
+    /**
+     * Main/default application window
+     */
     public static Display display;
 
     private Thread thread;
     private boolean running = false;
 
     public static KeyManager keyManager;
+    public static MouseManager mouseManager;
 
     // Class
     public Engine() {}
@@ -64,6 +68,7 @@ public class Engine implements Runnable
     private void tick()
     {
         keyManager.tick();
+        mouseManager.tick();
     }
 
     /**
@@ -91,8 +96,6 @@ public class Engine implements Runnable
         // clear screen
         g.clearRect(0, 0, Reference.displayWidth, Reference.displayHeight);
         // draw here
-
-        g.drawImage(FileLoader.loadImage("/assets/sample_texture.png"), 0, 0, 292, 88, null);
 
         // end drawing
         bs.show();
