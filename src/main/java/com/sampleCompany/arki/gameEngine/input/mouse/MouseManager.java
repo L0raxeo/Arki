@@ -4,6 +4,7 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 /**
@@ -21,13 +22,20 @@ import java.util.ArrayList;
                 "Lorcan Andrew Cheng"
         }
 )
-public class MouseManager implements MouseListener
+public class MouseManager implements MouseListener, MouseMotionListener
 {
 
     /**
      * All registered mouse buttons in the program.
      */
     private static final ArrayList<MBtn> allMBtns = new ArrayList<>();
+
+    /**
+     * Cursor position/information
+     */
+    public static int xMouse = 0, yMouse = 0;
+    public static int xMove, yMove;
+    public static int xDragged, yDragged;
 
     /**
      * Updates all mouse buttons and their states.
@@ -78,6 +86,40 @@ public class MouseManager implements MouseListener
         return false;
     }
 
+    // Getters
+
+    public static int getMouseX()
+    {
+        return xMouse;
+    }
+
+    public static int getMouseY()
+    {
+        return yMouse;
+    }
+
+    public static int getMouseMoveX()
+    {
+        return xMove;
+    }
+
+    public static int getMouseMoveY()
+    {
+        return yMove;
+    }
+
+    public static int getMouseDraggedX()
+    {
+        return xDragged;
+    }
+
+    public static int getMouseDraggedY()
+    {
+        return yDragged;
+    }
+
+    // Implemented methods
+
     @Override
     public void mouseClicked(MouseEvent e) {}
 
@@ -89,14 +131,14 @@ public class MouseManager implements MouseListener
             if (mBtn.getState() == MBtnState.HELD)
                 return;
 
-            if (mBtn.getBtnCode() == e.hashCode() && mBtn.getState() == MBtnState.IDLE)
+            if (mBtn.getBtnCode() == e.getButton() && mBtn.getState() == MBtnState.IDLE)
             {
                 mBtn.queueState(MBtnState.PRESSED);
                 return;
             }
         }
 
-        allMBtns.add(new MBtn(e.hashCode(), MBtnState.PRESSED));
+        allMBtns.add(new MBtn(e.getButton(), MBtnState.PRESSED));
     }
 
     @Override
@@ -104,9 +146,12 @@ public class MouseManager implements MouseListener
     {
         for (MBtn mBtn : allMBtns)
         {
-            if (mBtn.getBtnCode() == e.hashCode())
+            if (mBtn.getBtnCode() == e.getButton())
                 mBtn.queueState(MBtnState.RELEASED);
         }
+
+        xDragged = 0;
+        yDragged = 0;
     }
 
     @Override
@@ -119,6 +164,26 @@ public class MouseManager implements MouseListener
     public void mouseExited(MouseEvent e)
     {
 
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e)
+    {
+        xDragged = -(xMouse - e.getX());
+        yDragged = yMouse - e.getY();
+        xMove = -(xMouse - e.getX());
+        yMove = yMouse - e.getY();
+        xMouse = e.getX();
+        yMouse = e.getY();
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e)
+    {
+        xMove = -(xMouse - e.getX());
+        yMove = yMouse - e.getY();
+        xMouse = e.getX();
+        yMouse = e.getY();
     }
 
 }
