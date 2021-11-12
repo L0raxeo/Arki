@@ -1,6 +1,7 @@
 package com.sampleCompany.arki.gameEngine.display;
 
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
+import com.sampleCompany.sampleGame.Reference;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +18,7 @@ import java.awt.*;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/9/2021",
+        releaseDate = "11/11/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -56,7 +57,7 @@ public class Display
         frame = new JFrame(title);
         frame.setSize(size);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        frame.setResizable(Reference.resizeable);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 

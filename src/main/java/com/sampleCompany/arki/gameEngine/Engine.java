@@ -6,6 +6,7 @@ import com.sampleCompany.arki.gameEngine.init.Registry;
 import com.sampleCompany.arki.gameEngine.init.Window;
 import com.sampleCompany.arki.gameEngine.input.keyboard.KeyManager;
 import com.sampleCompany.arki.gameEngine.input.mouse.MouseManager;
+import com.sampleCompany.arki.gameEngine.utils.FileLoader;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import com.sampleCompany.sampleGame.Reference;
 

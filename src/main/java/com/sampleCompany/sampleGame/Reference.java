@@ -1,5 +1,13 @@
 package com.sampleCompany.sampleGame;
 
+/**
+ * -- Backend game settings --
+ *
+ * Game creator should change info here
+ * according to the game.
+ *
+ * @author Lorcan A. Cheng
+ */
 public class Reference
 {
 
@@ -18,5 +26,7 @@ public class Reference
     public static final int displayWidth = 1080;
 
     public static final int displayHeight = 720;
+
+    public static final boolean resizeable = false;
 
 }

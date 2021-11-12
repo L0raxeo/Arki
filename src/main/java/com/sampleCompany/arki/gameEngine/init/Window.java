@@ -41,7 +41,8 @@ public class Window implements Initializer
     public void postInit()
     {
         Engine.display.getFrame().addKeyListener(Engine.keyManager);
-        Engine.display.getFrame().addMouseListener(Engine.mouseManager);
+        Engine.display.getCanvas().addMouseListener(Engine.mouseManager);
+        Engine.display.getCanvas().addMouseMotionListener(Engine.mouseManager);
     }
 
 }
