@@ -128,7 +128,7 @@ public class KeyManager implements KeyListener
                 return true;
         }
 
-        return true;
+        return false;
     }
 
     // Implemented methods

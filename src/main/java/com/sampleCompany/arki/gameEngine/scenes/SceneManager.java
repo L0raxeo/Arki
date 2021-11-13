@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/12/2021",
+        releaseDate = "11/13/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -34,6 +34,8 @@ public class SceneManager
      */
     private static Scene currentScene = null;
 
+    private static Scene defaultScene = null;
+
     /**
      * Queued scene to be set to active
      * Overwrites queued scene (cannot queue multiple scenes)
@@ -46,15 +48,29 @@ public class SceneManager
      */
     public SceneManager() throws InstantiationException, IllegalAccessException
     {
-        Reflections ref = new Reflections("com");
+        // Get the package of the game (not game engine) by hierarchy instead of name.
+        String[] splitPackages = this.getClass().getPackageName().split("\\.");
+        StringBuilder rootPackage = new StringBuilder();
+        for (int i = 0; i < 2; i++)
+        {
+            rootPackage.append(splitPackages[i]).append(".");
+        }
+
+        // Scans specified package (defined above) for Scenes.
+        Reflections ref = new Reflections(rootPackage + "game");
         Set<Class<? extends Scene>> classes = ref.getSubTypesOf(Scene.class);
 
         for (Class<? extends Scene> scene : classes)
         {
             Scene s = scene.newInstance();
 
+            addScene(s);
+
             if (scene.isAnnotationPresent(DefaultScene.class))
+            {
+                defaultScene = s;
                 forceScene(s);
+            }
         }
     }
 
@@ -150,9 +166,14 @@ public class SceneManager
     /**
      * @return active scene
      */
-    public Scene getCurrentScene()
+    public static Scene getCurrentScene()
     {
         return currentScene;
+    }
+
+    public static Scene getDefaultScene()
+    {
+        return defaultScene;
     }
 
     // Force changes

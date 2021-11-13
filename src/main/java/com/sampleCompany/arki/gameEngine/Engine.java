@@ -9,9 +9,10 @@ import com.sampleCompany.arki.gameEngine.input.keyboard.KeyManager;
 import com.sampleCompany.arki.gameEngine.input.mouse.MouseManager;
 import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
-import com.sampleCompany.sampleGame.Reference;
+import com.sampleCompany.game.sampleGame.Reference;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 
 /**
@@ -24,7 +25,7 @@ import java.awt.image.BufferStrategy;
  */
 @VersionInfo (
         version = "1.0",
-        releaseDate = "11/11/2021",
+        releaseDate = "11/13/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -104,7 +105,7 @@ public class Engine implements Runnable
 
         Graphics g = bs.getDrawGraphics();
         // clear screen
-        g.clearRect(0, 0, Reference.displayWidth, Reference.displayHeight);
+        g.clearRect(0, 0, display.getFrame().getWidth(), display.getFrame().getHeight());
         // draw here
 
         sceneManager.render(g);

@@ -2,7 +2,7 @@ package com.sampleCompany.arki.gameEngine.init;
 
 import com.sampleCompany.arki.gameEngine.utils.FileLoader;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
-import com.sampleCompany.sampleGame.Reference;
+import com.sampleCompany.game.sampleGame.Reference;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/9/2021",
+        releaseDate = "11/13/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"

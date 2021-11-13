@@ -1,4 +1,4 @@
-package com.sampleCompany.sampleGame.scenes;
+package com.sampleCompany.game.sampleGame.scenes;
 
 import com.sampleCompany.arki.gameEngine.scenes.DefaultScene;
 import com.sampleCompany.arki.gameEngine.scenes.Scene;
@@ -11,20 +11,16 @@ import java.awt.*;
 public class SampleScene extends Scene
 {
 
-    public SampleScene()
-    {
-        super();
-    }
-
     @Override
     public void awake()
     {
-        System.out.println("waking");
+
     }
 
     @Override
-    public void start() {
-        System.out.println("starting");
+    public void start()
+    {
+
     }
 
     @Override

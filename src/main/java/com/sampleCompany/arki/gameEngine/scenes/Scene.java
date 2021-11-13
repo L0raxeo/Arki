@@ -13,7 +13,7 @@ import java.awt.*;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/12/2021",
+        releaseDate = "11/13/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -30,11 +30,6 @@ public abstract class Scene
      * public class SampleScene extends Scene
      * {
 
-     *      public SampleScene()
-     *      {
-     *          super();
-     *      }
-
      *      @Override
      *      public void tick()
      *      {
@@ -50,16 +45,14 @@ public abstract class Scene
      * }
      */
 
-    /**
-     * Should always be included in scene object.
-     *
-     * Automatically adds the scene to the scene
-     * manager, in order for it to be handled
-     * properly.
-     */
+    public String name;
+    public String id;
+
+    // Class
     public Scene()
     {
-        SceneManager.addScene(this);
+        name = this.getClass().getAnnotation(SceneInfo.class).name();
+        id = this.getClass().getAnnotation(SceneInfo.class).sceneID();
     }
 
     // Initializers

@@ -5,7 +5,7 @@ import com.sampleCompany.arki.gameEngine.display.Display;
 import com.sampleCompany.arki.gameEngine.input.keyboard.KeyManager;
 import com.sampleCompany.arki.gameEngine.input.mouse.MouseManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
-import com.sampleCompany.sampleGame.Reference;
+import com.sampleCompany.game.sampleGame.Reference;
 
 /**
  * Manages all keys, and can be used to
@@ -16,7 +16,7 @@ import com.sampleCompany.sampleGame.Reference;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/11/2021",
+        releaseDate = "11/13/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
