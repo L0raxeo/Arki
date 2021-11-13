@@ -2,7 +2,10 @@ package com.sampleCompany.arki.gameEngine.scenes;
 
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Carries basic scene information.
