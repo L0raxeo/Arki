@@ -53,33 +53,48 @@ public class MouseManager implements MouseListener, MouseMotionListener
         }
     }
 
-    public static boolean isHeld(int e)
+    /**
+     * @return true if the specified mouse button
+     * associated with the mouse button event is
+     * being held.
+     */
+    public static boolean isHeld(int btn)
     {
         for (MBtn mBtn : allMBtns)
         {
-            if (mBtn.getBtnCode() == e && mBtn.getState() == MBtnState.HELD || mBtn.getState() == MBtnState.PRESSED)
+            if (mBtn.getBtnCode() == btn && mBtn.getState() == MBtnState.HELD || mBtn.getState() == MBtnState.PRESSED)
                 return true;
         }
 
         return false;
     }
 
-    public static boolean onPress(int e)
+    /**
+     * @return true if the specified mouse button
+     * associated with the mouse button event is
+     * being pressed.
+     */
+    public static boolean onPress(int btn)
     {
         for (MBtn mBtn : allMBtns)
         {
-            if (mBtn.getBtnCode() == e && mBtn.getState() == MBtnState.PRESSED)
+            if (mBtn.getBtnCode() == btn && mBtn.getState() == MBtnState.PRESSED)
                 return true;
         }
 
         return false;
     }
 
-    public static boolean onRelease(int e)
+    /**
+     * @return true if the specified mouse button
+     * associated with the mouse button event is
+     * being released.
+     */
+    public static boolean onRelease(int btn)
     {
         for (MBtn mBtn : allMBtns)
         {
-            if (mBtn.getBtnCode() == e && mBtn.getState() == MBtnState.RELEASED)
+            if (mBtn.getBtnCode() == btn && mBtn.getState() == MBtnState.RELEASED)
                 return true;
         }
 

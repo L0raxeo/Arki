@@ -1,12 +1,13 @@
 package com.sampleCompany.arki.gameEngine;
 
 import com.sampleCompany.arki.gameEngine.display.Display;
+import com.sampleCompany.arki.gameEngine.init.Game;
 import com.sampleCompany.arki.gameEngine.init.ProjectStructure;
 import com.sampleCompany.arki.gameEngine.init.Registry;
 import com.sampleCompany.arki.gameEngine.init.Window;
 import com.sampleCompany.arki.gameEngine.input.keyboard.KeyManager;
 import com.sampleCompany.arki.gameEngine.input.mouse.MouseManager;
-import com.sampleCompany.arki.gameEngine.utils.FileLoader;
+import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import com.sampleCompany.sampleGame.Reference;
 
@@ -37,8 +38,13 @@ public class Engine implements Runnable
      */
     public static Display display;
 
+    // Thread
     private Thread thread;
     private boolean running = false;
+
+    // Game
+
+    public static SceneManager sceneManager;
 
     public static KeyManager keyManager;
     public static MouseManager mouseManager;
@@ -53,6 +59,7 @@ public class Engine implements Runnable
     {
         Registry.addInitializer(new ProjectStructure());
         Registry.addInitializer(new Window());
+        Registry.addInitializer(new Game());
     }
 
     /**
@@ -70,6 +77,8 @@ public class Engine implements Runnable
     {
         keyManager.tick();
         mouseManager.tick();
+
+        sceneManager.tick();
     }
 
     /**
@@ -97,6 +106,8 @@ public class Engine implements Runnable
         // clear screen
         g.clearRect(0, 0, Reference.displayWidth, Reference.displayHeight);
         // draw here
+
+        sceneManager.render(g);
 
         // end drawing
         bs.show();

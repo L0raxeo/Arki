@@ -1,5 +1,168 @@
 package com.sampleCompany.arki.gameEngine.scenes;
 
+import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
+import org.reflections.Reflections;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Set;
+
+/**
+ * Manages all registered scenes, and
+ * handles their use.
+ *
+ * @author Lorcan A. Cheng
+ */
+@VersionInfo(
+        version = "1.0",
+        releaseDate = "11/12/2021",
+        since = "1.0",
+        contributors = {
+                "Lorcan Andrew Cheng"
+        }
+)
 public class SceneManager
 {
+
+    /**
+     * All known registered defined scenes
+     */
+    private static final ArrayList<Scene> allScenes = new ArrayList<>();
+
+    /**
+     * Current scene active
+     */
+    private static Scene currentScene = null;
+
+    /**
+     * Queued scene to be set to active
+     * Overwrites queued scene (cannot queue multiple scenes)
+     */
+    private static Scene queuedScene = null;
+
+    /**
+     * Scans entire project for scenes and
+     * automatically registers them.
+     */
+    public SceneManager() throws InstantiationException, IllegalAccessException
+    {
+        Reflections ref = new Reflections("com");
+        Set<Class<? extends Scene>> classes = ref.getSubTypesOf(Scene.class);
+
+        for (Class<? extends Scene> scene : classes)
+        {
+            Scene s = scene.newInstance();
+
+            if (scene.isAnnotationPresent(DefaultScene.class))
+                forceScene(s);
+        }
+    }
+
+    /**
+     * Updates current scene
+     */
+    public void tick()
+    {
+        if (queuedScene != null)
+        {
+            currentScene.sleep();
+            forceScene(queuedScene);
+            queuedScene = null;
+        }
+
+        if (currentScene != null)
+            currentScene.tick();
+    }
+
+    /**
+     * Renders current scene
+     */
+    public void render(Graphics g)
+    {
+        if (currentScene != null)
+            currentScene.render(g);
+    }
+
+    // Array list scene getters and setters
+
+    /**
+     * Adds scene to all scenes array list.
+     * Invokes awake() method, since the
+     * scene is being created.
+     */
+    public static void addScene(Scene scene)
+    {
+        allScenes.add(scene);
+        scene.awake();
+    }
+
+    /**
+     * Forces specified scene to be set to active
+     */
+    public static void forceScene(Scene scene)
+    {
+        currentScene = scene;
+        currentScene.start();
+    }
+
+    /**
+     * @return scene associated with specified ID
+     */
+    public static Scene getScene(String id)
+    {
+        for (Scene s : allScenes)
+        {
+            if (s.getClass().getAnnotation(SceneInfo.class).sceneID().equals(id))
+                return s;
+        }
+
+        return null;
+    }
+
+    // All methods of switching scenes
+
+    /**
+     * Sets scene object specified
+     */
+    public static void setScene(Scene scene)
+    {
+        if (queuedScene != scene)
+            queuedScene = scene;
+    }
+
+    /**
+     * Sets scene of specified ID
+     */
+    public static void setScene(String id)
+    {
+        if (queuedScene.equals(getScene(id)))
+            return;
+
+        for (Scene s : allScenes)
+        {
+            if (s.getClass().getAnnotation(SceneInfo.class).sceneID().equals(id))
+                queuedScene = getScene(id);
+        }
+    }
+
+    // Getters
+
+    /**
+     * @return active scene
+     */
+    public Scene getCurrentScene()
+    {
+        return currentScene;
+    }
+
+    // Force changes
+
+    /**
+     * Deletes scene from {@link SceneManager}
+     */
+    public static void deleteScene(Scene scene)
+    {
+        allScenes.remove(scene);
+    }
+
 }

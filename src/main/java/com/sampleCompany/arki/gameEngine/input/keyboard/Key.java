@@ -21,14 +21,16 @@ public class Key
 {
 
     private final int keyCode;
+    private final char keyChar;
     private KeyState state;
     private KeyState queuedState;
 
     // Class
-    public Key(int key, KeyState state)
+    public Key(int key, KeyState state, char keyChar)
     {
         this.keyCode = key;
         this.queuedState = state;
+        this.keyChar = keyChar;
     }
 
     public void setState()
@@ -46,6 +48,11 @@ public class Key
     public int getKeyCode()
     {
         return keyCode;
+    }
+
+    public char getKeyChar()
+    {
+        return keyChar;
     }
 
     public KeyState getState()

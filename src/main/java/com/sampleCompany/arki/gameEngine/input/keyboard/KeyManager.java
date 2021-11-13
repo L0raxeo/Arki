@@ -45,16 +45,32 @@ public class KeyManager implements KeyListener
         }
     }
 
+    // Both instances of each type of method do the
+    // same thing, but the first one detects the key
+    // associated with the key event's key code, and
+    // the second one detects the key associated with
+    // its character.
     /**
      * @return true if the specified key
      * associated with the key event is
      * being held.
      */
-    public static boolean isHeld(int e)
+    public static boolean isHeld(int key)
     {
         for (Key k : allKeys)
         {
-            if (k.getKeyCode() == e && k.getState() == KeyState.HELD || k.getState() == KeyState.PRESSED)
+            if (k.getKeyCode() == key && k.getState() == KeyState.HELD || k.getState() == KeyState.PRESSED)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isHeld(char key)
+    {
+        for (Key k : allKeys)
+        {
+            if (k.getKeyChar() == key && k.getState() == KeyState.HELD || k.getState() == KeyState.PRESSED)
                 return true;
         }
 
@@ -66,11 +82,22 @@ public class KeyManager implements KeyListener
      * associated with the key event is
      * being pressed.
      */
-    public static boolean onPress(int e)
+    public static boolean onPress(int key)
     {
         for (Key k : allKeys)
         {
-            if (k.getKeyCode() == e && k.getState() == KeyState.PRESSED)
+            if (k.getKeyCode() == key && k.getState() == KeyState.PRESSED)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static boolean onPress(char key)
+    {
+        for (Key k : allKeys)
+        {
+            if (k.getKeyChar() == key && k.getState() == KeyState.PRESSED)
                 return true;
         }
 
@@ -80,17 +107,28 @@ public class KeyManager implements KeyListener
     /**
      * @return true if the specified key
      * associated with the key event is
-     * being pressed.
+     * being released.
      */
-    public static boolean onRelease(int e)
+    public static boolean onRelease(int key)
     {
         for (Key k : allKeys)
         {
-            if (k.getKeyCode() == e && k.getState() == KeyState.RELEASED)
+            if (k.getKeyCode() == key && k.getState() == KeyState.RELEASED)
                 return true;
         }
 
         return false;
+    }
+
+    public static boolean onRelease(char key)
+    {
+        for (Key k : allKeys)
+        {
+            if (k.getKeyChar() == key && k.getState() == KeyState.RELEASED)
+                return true;
+        }
+
+        return true;
     }
 
     // Implemented methods
@@ -115,7 +153,7 @@ public class KeyManager implements KeyListener
             }
         }
 
-        allKeys.add(new Key(e.getKeyCode(), KeyState.PRESSED));
+        allKeys.add(new Key(e.getKeyCode(), KeyState.PRESSED, e.getKeyChar()));
     }
 
     @Override
