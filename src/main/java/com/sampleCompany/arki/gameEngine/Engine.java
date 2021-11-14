@@ -1,6 +1,7 @@
 package com.sampleCompany.arki.gameEngine;
 
 import com.sampleCompany.arki.gameEngine.display.Display;
+import com.sampleCompany.arki.gameEngine.entities.EntityManager;
 import com.sampleCompany.arki.gameEngine.init.Game;
 import com.sampleCompany.arki.gameEngine.init.ProjectStructure;
 import com.sampleCompany.arki.gameEngine.init.Registry;
@@ -12,7 +13,6 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import com.sampleCompany.game.sampleGame.Reference;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 
 /**
@@ -31,7 +31,7 @@ import java.awt.image.BufferStrategy;
                 "Lorcan Andrew Cheng"
         }
 )
-public class Engine implements Runnable
+public final class Engine implements Runnable
 {
 
     /**
@@ -46,6 +46,7 @@ public class Engine implements Runnable
     // Game
 
     public static SceneManager sceneManager;
+    public static EntityManager entityManager;
 
     public static KeyManager keyManager;
     public static MouseManager mouseManager;

@@ -15,13 +15,13 @@ import java.util.ArrayList;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/11/2021",
+        releaseDate = "11/13/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
         }
 )
-public class KeyManager implements KeyListener
+public final class KeyManager implements KeyListener
 {
 
     /**

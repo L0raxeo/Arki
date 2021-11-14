@@ -4,6 +4,7 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import org.reflections.Reflections;
 
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ import java.util.Set;
                 "Lorcan Andrew Cheng"
         }
 )
-public class SceneManager
+public final class SceneManager
 {
 
     /**
@@ -46,7 +47,7 @@ public class SceneManager
      * Scans entire project for scenes and
      * automatically registers them.
      */
-    public SceneManager() throws InstantiationException, IllegalAccessException
+    public SceneManager() throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
     {
         // Get the package of the game (not game engine) by hierarchy instead of name.
         String[] splitPackages = this.getClass().getPackageName().split("\\.");
@@ -62,7 +63,7 @@ public class SceneManager
 
         for (Class<? extends Scene> scene : classes)
         {
-            Scene s = scene.newInstance();
+            Scene s = scene.getDeclaredConstructor().newInstance();
 
             addScene(s);
 

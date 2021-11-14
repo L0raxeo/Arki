@@ -1,6 +1,7 @@
 package com.sampleCompany.arki.gameEngine.init;
 
 import com.sampleCompany.arki.gameEngine.Engine;
+import com.sampleCompany.arki.gameEngine.entities.EntityManager;
 import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
@@ -24,6 +25,7 @@ public class Game implements Initializer
     public void preInit() throws Exception
     {
         Engine.sceneManager = new SceneManager();
+        Engine.entityManager = new EntityManager();
     }
 
 }
