@@ -2,18 +2,21 @@ package com.sampleCompany.arki.gameEngine;
 
 import com.sampleCompany.arki.gameEngine.display.Display;
 import com.sampleCompany.arki.gameEngine.entities.EntityManager;
-import com.sampleCompany.arki.gameEngine.init.Game;
-import com.sampleCompany.arki.gameEngine.init.ProjectStructure;
-import com.sampleCompany.arki.gameEngine.init.Registry;
+import com.sampleCompany.arki.gameEngine.init.*;
 import com.sampleCompany.arki.gameEngine.init.Window;
 import com.sampleCompany.arki.gameEngine.input.keyboard.KeyManager;
 import com.sampleCompany.arki.gameEngine.input.mouse.MouseManager;
+import com.sampleCompany.arki.gameEngine.scenes.DefaultScene;
+import com.sampleCompany.arki.gameEngine.scenes.Scene;
 import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import com.sampleCompany.game.sampleGame.Reference;
+import org.reflections.Reflections;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 
 /**
  * The main engine of Arki, where
@@ -57,11 +60,24 @@ public final class Engine implements Runnable
     /**
      * Registers initializers that are part of the game engine.
      */
-    private void registerEngineInitializers()
+    private void registerEngineInitializers() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
     {
-        Registry.addInitializer(new ProjectStructure());
-        Registry.addInitializer(new Window());
-        Registry.addInitializer(new Game());
+        // Get the package of the game (not game engine) by hierarchy instead of name.
+        String[] splitPackages = this.getClass().getPackageName().split("\\.");
+        StringBuilder rootPackage = new StringBuilder();
+        for (int i = 0; i < 2; i++)
+        {
+            rootPackage.append(splitPackages[i]).append(".");
+        }
+        rootPackage.deleteCharAt(17);
+        // Scans specified package (defined above) for Scenes.
+        Reflections reflections = new Reflections(rootPackage.toString());
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Init.class);
+
+        for (Class<?> c : annotated)
+        {
+            Registry.addInitializer((Initializer) c.getDeclaredConstructor().newInstance());
+        }
     }
 
     /**
@@ -124,7 +140,14 @@ public final class Engine implements Runnable
     @Override
     public void run()
     {
-        registerEngineInitializers();
+        try
+        {
+            registerEngineInitializers();
+        }
+        catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
 
         try
         {

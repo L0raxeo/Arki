@@ -16,12 +16,13 @@ import com.sampleCompany.game.sampleGame.Reference;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/13/2021",
+        releaseDate = "11/14/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
         }
 )
+@Init
 public class Window implements Initializer
 {
     @Override

@@ -12,12 +12,13 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/12/2021",
+        releaseDate = "11/14/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
         }
 )
+@Init
 public class Game implements Initializer
 {
 
