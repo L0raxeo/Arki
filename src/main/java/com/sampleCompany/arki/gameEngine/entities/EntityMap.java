@@ -1,9 +1,23 @@
 package com.sampleCompany.arki.gameEngine.entities;
 
-import com.sampleCompany.arki.gameEngine.scenes.Scene;
+import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 import java.util.ArrayList;
 
+/**
+ * Container for a large quantity of entities to
+ * be registered all at once into the entity manager.
+ *
+ * @author Lorcan A. Cheng
+ */
+@VersionInfo(
+        version = "1.0",
+        releaseDate = "11/14/2021",
+        since = "1.0",
+        contributors = {
+                "Lorcan Andrew Cheng"
+        }
+)
 public abstract class EntityMap
 {
 
@@ -12,16 +26,9 @@ public abstract class EntityMap
      */
     public final ArrayList<Entity> entities = new ArrayList<>();
 
-    /**
-     * Scene associated with entity map.
-     */
-    private final Scene scene;
-
     // class
-    public EntityMap(Scene scene)
+    public EntityMap()
     {
-        this.scene = scene;
-
         mapEntities();
     }
 
@@ -44,14 +51,6 @@ public abstract class EntityMap
     public ArrayList<Entity> getEntities()
     {
         return entities;
-    }
-
-    /**
-     * Get scene associated with entity map.
-     */
-    public Scene getScene()
-    {
-        return scene;
     }
 
 }

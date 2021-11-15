@@ -1,6 +1,6 @@
 package com.sampleCompany.game.sampleGame.scenes;
 
-import com.sampleCompany.arki.gameEngine.Engine;
+import com.sampleCompany.arki.gameEngine.entities.EntityManager;
 import com.sampleCompany.arki.gameEngine.scenes.DefaultScene;
 import com.sampleCompany.arki.gameEngine.scenes.Scene;
 import com.sampleCompany.arki.gameEngine.scenes.SceneInfo;
@@ -21,19 +21,19 @@ public class SampleScene extends Scene
     @Override
     public void start()
     {
-
+        EntityManager.mapEntities(new SampleEntityMap());
     }
 
     @Override
     public void tick()
     {
-        Engine.entityManager.tick();
+
     }
 
     @Override
     public void render(Graphics g)
     {
-        Engine.entityManager.render(g);
+
     }
 
 }

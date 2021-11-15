@@ -1,10 +1,28 @@
 package com.sampleCompany.arki.gameEngine.entities;
 
+import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.ListIterator;
 
+/**
+ * Manages all entities and all subtypes by
+ * registering, communicating, with each entity,
+ * and relaying information from the engine to
+ * each entity.
+ *
+ * @author Lorcan A. Cheng
+ */
+@VersionInfo(
+        version = "1.0",
+        releaseDate = "11/14/2021",
+        since = "1.0",
+        contributors = {
+                "Lorcan Andrew Cheng"
+        }
+)
 public final class EntityManager
 {
 
@@ -58,7 +76,10 @@ public final class EntityManager
      */
     public static void mapEntities(EntityMap entityMap)
     {
-        allEntities.addAll(entityMap.getEntities());
+        for (Entity e : entityMap.getEntities())
+        {
+            addEntity(e);
+        }
     }
 
     /**
@@ -80,6 +101,7 @@ public final class EntityManager
     public static void addEntity(Entity e)
     {
         allEntities.add(e);
+        e.start();
     }
 
     /**

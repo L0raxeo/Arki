@@ -1,7 +1,24 @@
 package com.sampleCompany.arki.gameEngine.entities;
 
+import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
+
 import java.awt.*;
 
+/**
+ * Parent version of all entity subtypes.
+ * Contains general attributes that all
+ * objects/entities inherit.
+ *
+ * @author Lorcan A. Cheng
+ */
+@VersionInfo(
+        version = "1.0",
+        releaseDate = "11/14/2021",
+        since = "1.0",
+        contributors = {
+                "Lorcan Andrew Cheng"
+        }
+)
 public abstract class Entity
 {
 
@@ -27,8 +44,20 @@ public abstract class Entity
         this.y = y;
         this.width = width;
         this.height = height;
-        this.bounds = new Rectangle(0, 0, width, height);
+        this.bounds = new Rectangle((int) x, (int) y, width, height);
+
+        awake();
     }
+
+    /**
+     * Invoked on class instantiation.
+     */
+    public void awake() {}
+
+    /**
+     * Invoked on registry into entity manager.
+     */
+    public void start() {}
 
     /**
      * Updates entity

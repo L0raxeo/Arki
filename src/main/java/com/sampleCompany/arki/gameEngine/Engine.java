@@ -28,7 +28,7 @@ import java.util.Set;
  */
 @VersionInfo (
         version = "1.0",
-        releaseDate = "11/13/2021",
+        releaseDate = "11/14/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -96,7 +96,8 @@ public final class Engine implements Runnable
         keyManager.tick();
         mouseManager.tick();
 
-        sceneManager.tick();
+        if (sceneManager != null)
+            sceneManager.tick();
     }
 
     /**

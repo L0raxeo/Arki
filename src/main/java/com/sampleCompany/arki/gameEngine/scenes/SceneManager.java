@@ -1,5 +1,6 @@
 package com.sampleCompany.arki.gameEngine.scenes;
 
+import com.sampleCompany.arki.gameEngine.Engine;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import org.reflections.Reflections;
 
@@ -16,7 +17,7 @@ import java.util.Set;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/13/2021",
+        releaseDate = "11/14/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -89,6 +90,8 @@ public final class SceneManager
 
         if (currentScene != null)
             currentScene.tick();
+
+        Engine.entityManager.tick();
     }
 
     /**
@@ -98,6 +101,8 @@ public final class SceneManager
     {
         if (currentScene != null)
             currentScene.render(g);
+
+        Engine.entityManager.render(g);
     }
 
     // Array list scene getters and setters
