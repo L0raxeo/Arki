@@ -12,7 +12,7 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
  * @author Lorcan A. Cheng
  */
 @VersionInfo(
-        version = "1.0",
+        version = "2.1",
         releaseDate = "11/21/2021",
         since = "1.0",
         contributors = {
@@ -22,21 +22,31 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 public abstract class GameObject extends Entity
 {
 
+    // class
     public GameObject(String name, String unlocalizedName, float x, float y, int width, int height)
     {
         super(name, unlocalizedName, x, y, width, height);
     }
 
+    /**
+     * Moves object according to speed parameter on x-axis.
+     */
     public void moveX(int xSpeed)
     {
         setX(super.getX() + xSpeed);
     }
 
+    /**
+     * Moves object according to speed parameter on y-axis.
+     */
     public void moveY(int ySpeed)
     {
         setY(super.getY() + ySpeed);
     }
 
+    /**
+     * Moves object on both x and y axis according to paramters.
+     */
     public void move(int xSpeed, int ySpeed)
     {
         setX(super.getX() + xSpeed);

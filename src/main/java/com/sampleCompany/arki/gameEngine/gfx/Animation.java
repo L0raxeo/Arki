@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
  * @author Lorcan A. Cheng
  */
 @VersionInfo(
-        version = "1.0",
+        version = "2.0",
         releaseDate = "11/21/2021",
         since = "1.0",
         contributors = {
