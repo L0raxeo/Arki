@@ -13,7 +13,7 @@ import java.awt.*;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/20/2021",
+        releaseDate = "11/21/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -94,38 +94,38 @@ public abstract class Entity
 
     // Rendering position
 
-    public float getX()
+    public int getX()
     {
-        return xWorld;
+        return (int) xWorld;
     }
 
-    public float getY()
+    public int getY()
     {
-        return yWorld;
+        return (int) yWorld;
     }
 
     // World position
 
-    public float getWorldX()
+    public int getWorldX()
     {
-        return xWorld;
+        return (int) xWorld;
     }
 
-    public float getWorldY()
+    public int getWorldY()
     {
-        return yWorld;
+        return (int) yWorld;
     }
 
     // Display position
 
-    public float getDisplayX()
+    public int getDisplayX()
     {
-        return xDisplay;
+        return (int) xDisplay;
     }
 
-    public float getDisplayY()
+    public int getDisplayY()
     {
-        return yDisplay;
+        return (int) yDisplay;
     }
 
     public void setDisplayX(float x)
