@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/13/2021",
+        releaseDate = "11/20/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -59,7 +59,10 @@ public final class KeyManager implements KeyListener
     {
         for (Key k : allKeys)
         {
-            if (k.getKeyCode() == key && k.getState() == KeyState.HELD || k.getState() == KeyState.PRESSED)
+            if (k.getKeyCode() == key && k.getState() == KeyState.HELD)
+                return true;
+
+            if (k.getKeyCode() == key && k.getState() == KeyState.PRESSED)
                 return true;
         }
 
@@ -70,7 +73,10 @@ public final class KeyManager implements KeyListener
     {
         for (Key k : allKeys)
         {
-            if (k.getKeyChar() == key && k.getState() == KeyState.HELD || k.getState() == KeyState.PRESSED)
+            if (k.getKeyChar() == key && k.getState() == KeyState.HELD)
+                return true;
+
+            if (k.getKeyChar() == key && k.getState() == KeyState.PRESSED)
                 return true;
         }
 

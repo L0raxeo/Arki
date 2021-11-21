@@ -1,5 +1,6 @@
 package com.sampleCompany.arki.gameEngine.entities.ui;
 
+import com.sampleCompany.arki.gameEngine.gfx.Animation;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 import java.awt.*;
@@ -12,7 +13,7 @@ import java.awt.*;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/14/2021",
+        releaseDate = "11/20/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -25,18 +26,18 @@ public abstract class TextBox extends UIObject
     public boolean center;
     public Color color;
     public Font font;
-    // Animation animation = null;
+    Animation animation = null;
 
-    /*
-     * public TextBox(String name, String unlocalizedName, float x, float y, String text, Animation animation)
-     * {
-     *     super(name, unlocalizedName, x, y, 0, 0);
+    // class
+    public TextBox(String name, String unlocalizedName, float x, float y, String text, Animation animation)
+    {
+        super(name, unlocalizedName, x, y, 0, 0);
 
-     *     this.text = text;
-     *     this.animation = animation;
-     * }
-     */
+        this.text = text;
+        this.animation = animation;
+    }
 
+    // class
     public TextBox(String name, String unlocalizedName, String text, float x, float y, boolean center, Color color, Font font)
     {
         super(name, unlocalizedName, x, y, 0, 0);
@@ -46,19 +47,23 @@ public abstract class TextBox extends UIObject
         this.font = font;
     }
 
+    /**
+     * Updates text as well as animation if assigned.
+     */
     @Override
     public  void tick()
     {
-        /*
-         * if (animation != null)
-         *     animation.tick();
-         */
+        if (animation != null)
+            animation.tick();
     }
 
+    /**
+     * Renders text to screen.
+     */
     @Override
     public void render(Graphics g)
     {
-        Text.drawString(g, text, (int) x, (int) y, center, color, font);
+        Text.drawString(g, text, (int) xWorld, (int) yWorld, center, color, font);
     }
 
 }

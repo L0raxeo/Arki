@@ -2,12 +2,11 @@ package com.sampleCompany.arki.gameEngine;
 
 import com.sampleCompany.arki.gameEngine.display.Display;
 import com.sampleCompany.arki.gameEngine.entities.EntityManager;
-import com.sampleCompany.arki.gameEngine.init.*;
-import com.sampleCompany.arki.gameEngine.init.Window;
+import com.sampleCompany.arki.gameEngine.init.Init;
+import com.sampleCompany.arki.gameEngine.init.Initializer;
+import com.sampleCompany.arki.gameEngine.init.Registry;
 import com.sampleCompany.arki.gameEngine.input.keyboard.KeyManager;
 import com.sampleCompany.arki.gameEngine.input.mouse.MouseManager;
-import com.sampleCompany.arki.gameEngine.scenes.DefaultScene;
-import com.sampleCompany.arki.gameEngine.scenes.Scene;
 import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import com.sampleCompany.game.sampleGame.Reference;
@@ -28,7 +27,7 @@ import java.util.Set;
  */
 @VersionInfo (
         version = "1.0",
-        releaseDate = "11/14/2021",
+        releaseDate = "11/20/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"

@@ -11,7 +11,7 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/11/2021",
+        releaseDate = "11/20/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -20,9 +20,24 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 public class Key
 {
 
+    /**
+     * Key identifier through its code.
+     */
     private final int keyCode;
+
+    /**
+     * Key identifier in the form of individual character representation.
+     */
     private final char keyChar;
+
+    /**
+     * Current press state of key on keyboard.
+     */
     private KeyState state;
+
+    /**
+     * Queued state to be set to the key.
+     */
     private KeyState queuedState;
 
     // Class

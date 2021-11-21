@@ -22,6 +22,6 @@ public class Reference
 
     public static final int displayWidth = 1080;
     public static final int displayHeight = 720;
-    public static final boolean resizeable = true;
+    public static final boolean resizeable = false;
 
 }

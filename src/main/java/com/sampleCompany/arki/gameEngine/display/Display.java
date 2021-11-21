@@ -18,7 +18,7 @@ import java.awt.*;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/13/2021",
+        releaseDate = "11/20/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -70,6 +70,8 @@ public class Display
         frame.add(canvas);
         frame.pack();
     }
+
+    // Getters
 
     public Canvas getCanvas()
     {

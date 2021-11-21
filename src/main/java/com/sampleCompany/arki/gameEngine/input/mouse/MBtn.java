@@ -11,7 +11,7 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/11/2021",
+        releaseDate = "11/20/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -20,8 +20,17 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 public class MBtn
 {
 
+    /**
+     * Mouse button reference code.
+     */
     private final int btnCode;
+    /**
+     * Current press state of button.
+     */
     private MBtnState state;
+    /**
+     * Queued press state of button.
+     */
     private MBtnState queuedState;
 
     // Class
@@ -31,11 +40,17 @@ public class MBtn
         this.queuedState = state;
     }
 
+    /**
+     * Sets button press state to queued state.
+     */
     public void setState()
     {
         this.state = this.queuedState;
     }
 
+    /**
+     * Queues specified button press state to be set.
+     */
     public void queueState(MBtnState state)
     {
         this.queuedState = state;
@@ -43,16 +58,25 @@ public class MBtn
 
     // Getters
 
+    /**
+     * Gets code of this button.
+     */
     public int getBtnCode()
     {
         return btnCode;
     }
 
+    /**
+     * Gets current state of mouse button.
+     */
     public MBtnState getState()
     {
         return state;
     }
 
+    /**
+     * Gets queued state of mouse button.
+     */
     public MBtnState getQueuedState()
     {
         return queuedState;

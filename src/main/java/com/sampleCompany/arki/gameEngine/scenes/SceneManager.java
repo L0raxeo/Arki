@@ -1,11 +1,12 @@
 package com.sampleCompany.arki.gameEngine.scenes;
 
 import com.sampleCompany.arki.gameEngine.Engine;
+import com.sampleCompany.arki.gameEngine.init.Init;
+import com.sampleCompany.arki.gameEngine.init.Initializer;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import org.reflections.Reflections;
 
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -17,13 +18,14 @@ import java.util.Set;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/14/2021",
+        releaseDate = "11/20/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
         }
 )
-public final class SceneManager
+@Init
+public final class SceneManager implements Initializer
 {
 
     /**
@@ -48,7 +50,8 @@ public final class SceneManager
      * Scans entire project for scenes and
      * automatically registers them.
      */
-    public SceneManager() throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
+    @Override
+    public void init() throws Exception
     {
         // Get the package of the game (not game engine) by hierarchy instead of name.
         String[] splitPackages = this.getClass().getPackageName().split("\\.");

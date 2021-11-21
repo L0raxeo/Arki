@@ -13,7 +13,7 @@ import java.awt.*;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/14/2021",
+        releaseDate = "11/20/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -26,7 +26,8 @@ public abstract class Entity
 
     protected String name;
     protected String unlocalizedName;
-    protected float x, y;
+    protected float xWorld, yWorld;
+    protected float xDisplay, yDisplay;
     protected int width, height;
     protected Rectangle bounds;
 
@@ -40,8 +41,8 @@ public abstract class Entity
     {
         this.name = name;
         this.unlocalizedName = unlocalizedName;
-        this.x = x;
-        this.y = y;
+        this.xWorld = x;
+        this.yWorld = y;
         this.width = width;
         this.height = height;
         this.bounds = new Rectangle((int) x, (int) y, width, height);
@@ -50,12 +51,12 @@ public abstract class Entity
     }
 
     /**
-     * Invoked on class instantiation.
+     * Invoked on registry into entity manager.
      */
     public void awake() {}
 
     /**
-     * Invoked on registry into entity manager.
+     * Invoked on class instantiation.
      */
     public void start() {}
 
@@ -91,14 +92,50 @@ public abstract class Entity
 
     // Getters
 
+    // Rendering position
+
     public float getX()
     {
-        return x;
+        return xWorld;
     }
 
     public float getY()
     {
-        return y;
+        return yWorld;
+    }
+
+    // World position
+
+    public float getWorldX()
+    {
+        return xWorld;
+    }
+
+    public float getWorldY()
+    {
+        return yWorld;
+    }
+
+    // Display position
+
+    public float getDisplayX()
+    {
+        return xDisplay;
+    }
+
+    public float getDisplayY()
+    {
+        return yDisplay;
+    }
+
+    public void setDisplayX(float x)
+    {
+        this.xDisplay = x;
+    }
+
+    public void setDisplayY(float y)
+    {
+        this.yDisplay = y;
     }
 
     public int getWidth()
@@ -120,12 +157,12 @@ public abstract class Entity
 
     public void setX(int x)
     {
-        this.x = x;
+        this.xWorld = x;
     }
 
     public void setY(int y)
     {
-        this.y = y;
+        this.yWorld = y;
     }
 
     public void setWidth(int width)

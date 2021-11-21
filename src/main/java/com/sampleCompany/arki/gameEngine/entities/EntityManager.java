@@ -1,5 +1,9 @@
 package com.sampleCompany.arki.gameEngine.entities;
 
+import com.sampleCompany.arki.gameEngine.entities.objects.Object;
+import com.sampleCompany.arki.gameEngine.gfx.Camera;
+import com.sampleCompany.arki.gameEngine.init.Init;
+import com.sampleCompany.arki.gameEngine.init.Initializer;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 import java.awt.*;
@@ -17,13 +21,14 @@ import java.util.ListIterator;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/14/2021",
+        releaseDate = "11/20/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
         }
 )
-public final class EntityManager
+@Init
+public final class EntityManager implements Initializer
 {
 
     /**
@@ -34,7 +39,21 @@ public final class EntityManager
     /**
      * Used to sort render order of 2D objects that overlay one and other.
      */
-    private final Comparator<Entity> renderSorter = Comparator.comparingInt(a -> (int) a.getY() + a.getHeight());
+    private final Comparator<Entity> renderSorter = Comparator.comparingInt(a -> (int) a.getWorldY() + a.getHeight());
+
+    /**
+     * Camera object
+     */
+    public static Camera camera;
+
+    /**
+     * Initializes camera object
+     */
+    @Override
+    public void preInit()
+    {
+        camera = new Camera();
+    }
 
     /**
      * Updates all registered entities by invoking tick() method.
@@ -60,6 +79,8 @@ public final class EntityManager
         }
 
         allEntities.sort(renderSorter);
+
+        camera.tick();
     }
 
     /**
@@ -68,7 +89,20 @@ public final class EntityManager
     public void render(Graphics g)
     {
         for (Entity e : allEntities)
-            e.render(g);
+        {
+            e.setDisplayX(e.getWorldX() + camera.xOffset());
+            e.setDisplayY(e.getWorldY() + camera.yOffset());
+
+            if (camera.isEntityVisible(e))
+                e.render(g);
+        }
+    }
+
+    // CAMERA FOCUSING
+
+    public static void focusCam(Object e)
+    {
+        camera.focus(e);
     }
 
     /**
