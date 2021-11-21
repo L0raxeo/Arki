@@ -23,7 +23,7 @@ public class Game implements Initializer
 {
 
     @Override
-    public void preInit() throws Exception
+    public void preInit()
     {
         Engine.sceneManager = new SceneManager();
         Engine.entityManager = new EntityManager();
