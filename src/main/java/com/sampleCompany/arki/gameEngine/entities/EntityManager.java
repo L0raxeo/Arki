@@ -1,6 +1,6 @@
 package com.sampleCompany.arki.gameEngine.entities;
 
-import com.sampleCompany.arki.gameEngine.entities.objects.Object;
+import com.sampleCompany.arki.gameEngine.entities.objects.GameObject;
 import com.sampleCompany.arki.gameEngine.gfx.Camera;
 import com.sampleCompany.arki.gameEngine.init.Init;
 import com.sampleCompany.arki.gameEngine.init.Initializer;
@@ -100,9 +100,20 @@ public final class EntityManager implements Initializer
 
     // CAMERA FOCUSING
 
-    public static void focusCam(Object e)
+    /**
+     * @param e is the entity that the camera follows.
+     */
+    public static void focusCam(GameObject e)
     {
         camera.focus(e);
+    }
+
+    /**
+     * Stops camera from following current objects.
+     */
+    public static void releaseCam()
+    {
+        camera.focus(null);
     }
 
     /**

@@ -1,13 +1,13 @@
 package com.sampleCompany.arki.gameEngine.gfx;
 
 import com.sampleCompany.arki.gameEngine.entities.Entity;
-import com.sampleCompany.arki.gameEngine.entities.objects.Object;
+import com.sampleCompany.arki.gameEngine.entities.objects.GameObject;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 import com.sampleCompany.game.sampleGame.Reference;
 
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/20/2021",
+        releaseDate = "11/21/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -19,7 +19,7 @@ public class Camera
     /**
      * Entity that camera is fixed to/following
      */
-    public Object focusedEntity = null;
+    public GameObject focusedEntity = null;
 
     /**
      * 2D position of camera in the scene/world of the game.
@@ -55,7 +55,7 @@ public class Camera
     /**
      * Fixes camera on specified object.
      */
-    public void focus(Object e)
+    public void focus(GameObject e)
     {
         focusedEntity = e;
     }

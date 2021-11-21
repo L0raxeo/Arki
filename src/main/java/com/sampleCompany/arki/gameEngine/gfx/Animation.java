@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/20/2021",
+        releaseDate = "11/21/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -47,7 +47,7 @@ public class Animation
     private final BufferedImage[] frames;
 
     // Class
-    public Animation(int speed, BufferedImage[] frames)
+    public Animation(int speed, BufferedImage... frames)
     {
         this.speed = speed;
         this.frames = frames;

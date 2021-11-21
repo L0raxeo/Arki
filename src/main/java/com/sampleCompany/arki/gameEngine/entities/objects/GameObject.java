@@ -13,18 +13,34 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
  */
 @VersionInfo(
         version = "1.0",
-        releaseDate = "11/14/2021",
+        releaseDate = "11/21/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
         }
 )
-public abstract class Object extends Entity
+public abstract class GameObject extends Entity
 {
 
-    public Object(String name, String unlocalizedName, float x, float y, int width, int height)
+    public GameObject(String name, String unlocalizedName, float x, float y, int width, int height)
     {
         super(name, unlocalizedName, x, y, width, height);
+    }
+
+    public void moveX(int xSpeed)
+    {
+        setX(super.getX() + xSpeed);
+    }
+
+    public void moveY(int ySpeed)
+    {
+        setY(super.getY() + ySpeed);
+    }
+
+    public void move(int xSpeed, int ySpeed)
+    {
+        setX(super.getX() + xSpeed);
+        setY(super.getY() + ySpeed);
     }
 
 }
