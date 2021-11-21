@@ -1,6 +1,5 @@
 package com.sampleCompany.game.sampleGame.objects;
 
-import com.sampleCompany.arki.gameEngine.entities.EntityManager;
 import com.sampleCompany.arki.gameEngine.entities.objects.GameObject;
 import com.sampleCompany.arki.gameEngine.gfx.Animation;
 import com.sampleCompany.arki.gameEngine.utils.FileLoader;
