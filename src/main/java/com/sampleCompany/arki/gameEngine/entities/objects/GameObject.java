@@ -6,7 +6,6 @@ import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Entity subtype that is not used in GUIs, UIs, menus...
