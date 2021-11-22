@@ -34,10 +34,7 @@ public abstract class GameObject extends Entity
     }
 
     @Override
-    public void tick()
-    {
-        checkCollision();
-    }
+    public void tick() {}
 
     // Collision detection
 

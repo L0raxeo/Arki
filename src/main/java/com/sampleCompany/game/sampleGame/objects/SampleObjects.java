@@ -41,10 +41,10 @@ public class SampleObjects extends GameObject
     @Override
     public void tick()
     {
-        animation.tick();
-
         move(xSpeed, ySpeed);
         super.checkCollision();
+
+        animation.tick();
     }
 
     @Override
