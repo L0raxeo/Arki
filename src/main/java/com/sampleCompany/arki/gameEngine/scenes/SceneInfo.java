@@ -38,4 +38,14 @@ public @interface SceneInfo
      */
     String sceneID();
 
+    /**
+     * POV of camera: 'side' or 'top'
+     */
+    boolean sideView();
+
+    /**
+     * Gravitational constant (only applicable if scene has side view).
+     */
+    double gravitationalConstant();
+
 }

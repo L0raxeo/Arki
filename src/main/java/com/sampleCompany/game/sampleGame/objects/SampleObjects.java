@@ -1,24 +1,21 @@
 package com.sampleCompany.game.sampleGame.objects;
 
-import com.sampleCompany.arki.gameEngine.entities.EntityManager;
 import com.sampleCompany.arki.gameEngine.entities.objects.GameObject;
+import com.sampleCompany.arki.gameEngine.entities.objects.Physics;
 import com.sampleCompany.arki.gameEngine.gfx.Animation;
 import com.sampleCompany.arki.gameEngine.utils.FileLoader;
 
 import java.awt.*;
-import java.util.Random;
 
+@Physics(GRAVITATIONAL_ACCELERATION = 1, TERMINAL_VELOCITY = 300, mass = 5)
 public class SampleObjects extends GameObject
 {
 
     private Animation animation;
 
-    public int xSpeed, ySpeed;
-    public int xBaseSpeed = 0, yBaseSpeed = 0;
-
     public SampleObjects(String name, String unlocalizedName, float x, float y, int width, int height)
     {
-        super(name, unlocalizedName, x, y, width, height);
+        super(name, unlocalizedName, x, y, width, height, true);
     }
 
     @Override
@@ -30,20 +27,13 @@ public class SampleObjects extends GameObject
     @Override
     protected void start()
     {
-        Random r = new Random();
 
-        xSpeed = r.nextInt(xBaseSpeed + 5 - (xBaseSpeed - 5)) + xBaseSpeed - 5;
-        ySpeed = r.nextInt(yBaseSpeed + 5 - (yBaseSpeed - 5)) + yBaseSpeed - 5;
-
-        EntityManager.focusCam(this);
     }
 
     @Override
     public void tick()
     {
-        move(xSpeed, ySpeed);
         super.checkCollision();
-
         animation.tick();
     }
 

@@ -9,7 +9,7 @@ import com.sampleCompany.game.sampleGame.objects.SampleEntityMap;
 import java.awt.*;
 
 @DefaultScene
-@SceneInfo(name = "Sample Scene", sceneID = "sampleScene")
+@SceneInfo(name = "Sample Scene", sceneID = "sampleScene", sideView = true, gravitationalConstant = 9.8)
 public class SampleScene extends Scene
 {
 

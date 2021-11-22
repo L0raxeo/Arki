@@ -2,6 +2,8 @@ package com.sampleCompany.arki.gameEngine.entities.objects;
 
 import com.sampleCompany.arki.gameEngine.entities.Entity;
 import com.sampleCompany.arki.gameEngine.entities.EntityManager;
+import com.sampleCompany.arki.gameEngine.scenes.SceneInfo;
+import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 /**
@@ -23,14 +25,29 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 public abstract class GameObject extends Entity
 {
 
+    protected float GRAVITATIONAL_ACCELERATION;
+    protected float TERMINAL_VELOCITY;
+    protected float vertical_speed;
+    protected float mass;
+
+    protected boolean isSolid;
     protected boolean isColliding;
 
     // class
-    public GameObject(String name, String unlocalizedName, float x, float y, int width, int height)
+    public GameObject(String name, String unlocalizedName, float x, float y, int width, int height, boolean isSolid)
     {
         super(name, unlocalizedName, x, y, width, height);
 
+        this.isSolid = isSolid;
         isColliding = false;
+
+        if (this.getClass().isAnnotationPresent(Physics.class))
+        {
+            this.GRAVITATIONAL_ACCELERATION = this.getClass().getAnnotation(Physics.class).GRAVITATIONAL_ACCELERATION();
+            this.TERMINAL_VELOCITY = this.getClass().getAnnotation(Physics.class).TERMINAL_VELOCITY();
+            this.vertical_speed = 0;
+            this.mass = this.getClass().getAnnotation(Physics.class).mass();
+        }
     }
 
     @Override
@@ -110,6 +127,26 @@ public abstract class GameObject extends Entity
     {
         setX(super.getX() + xSpeed);
         setY(super.getY() + ySpeed);
+    }
+
+    // Physics
+
+    public void updatePhysics()
+    {
+        this.GRAVITATIONAL_ACCELERATION = (float) ((SceneManager.getCurrentScene().gravitationalConstant * mass) / Math.pow(getHeight() / 2f, 2));
+
+        if (SceneManager.getCurrentScene().sideView)
+            fall();
+    }
+
+    protected void fall()
+    {
+        this.vertical_speed += GRAVITATIONAL_ACCELERATION;
+
+        if (this.vertical_speed > TERMINAL_VELOCITY)
+            this.vertical_speed = TERMINAL_VELOCITY;
+
+        this.moveY((int) this.vertical_speed);
     }
 
 }

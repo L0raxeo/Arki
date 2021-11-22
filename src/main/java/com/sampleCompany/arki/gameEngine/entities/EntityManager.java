@@ -1,6 +1,7 @@
 package com.sampleCompany.arki.gameEngine.entities;
 
 import com.sampleCompany.arki.gameEngine.entities.objects.GameObject;
+import com.sampleCompany.arki.gameEngine.entities.objects.Physics;
 import com.sampleCompany.arki.gameEngine.gfx.Camera;
 import com.sampleCompany.arki.gameEngine.init.Init;
 import com.sampleCompany.arki.gameEngine.init.Initializer;
@@ -68,6 +69,16 @@ public final class EntityManager implements Initializer
             {
                 Entity e = it.next();
                 e.tick();
+
+                if (e instanceof GameObject)
+                {
+                    if (e.getClass().isAnnotationPresent(Physics.class))
+                    {
+                        GameObject physicsObj = (GameObject) e;
+
+                        physicsObj.updatePhysics();
+                    }
+                }
 
                 if (!e.isActive())
                     it.remove();

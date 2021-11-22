@@ -3,6 +3,7 @@ package com.sampleCompany.arki.gameEngine.scenes;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 import java.awt.*;
+import java.util.Objects;
 
 /**
  * World containing entities within the game.
@@ -19,7 +20,7 @@ import java.awt.*;
                 "Lorcan Andrew Cheng"
         }
 )
-@SceneInfo(name = "Sample Scene", sceneID = "sampleScene")
+@SceneInfo(name = "Sample Scene", sceneID = "sampleScene", sideView = true, gravitationalConstant = 9.8)
 public abstract class Scene
 {
 
@@ -47,15 +48,32 @@ public abstract class Scene
 
     public String name;
     public String id;
+    public boolean sideView;
+    public double gravitationalConstant;
 
     // Class
     public Scene()
     {
         name = this.getClass().getAnnotation(SceneInfo.class).name();
         id = this.getClass().getAnnotation(SceneInfo.class).sceneID();
+        sideView = this.getClass().getAnnotation(SceneInfo.class).sideView();
+        gravitationalConstant = this.getClass().getAnnotation(SceneInfo.class).gravitationalConstant();
+
+        setupView();
     }
 
     // Initializers
+
+    /**
+     * If the current scene is a side view then falling gravity applies.
+     */
+    private void setupView()
+    {
+        if (sideView)
+        {
+
+        }
+    }
 
     /**
      * Initializer that is invoked when the
@@ -63,10 +81,7 @@ public abstract class Scene
      * {@link SceneManager} within the game
      * engine.
      */
-    public void awake()
-    {
-
-    }
+    public void awake() {}
 
     /**
      * Initializer that is invoked when the
