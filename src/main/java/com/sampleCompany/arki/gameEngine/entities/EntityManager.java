@@ -21,7 +21,7 @@ import java.util.ListIterator;
  * @author Lorcan A. Cheng
  */
 @VersionInfo(
-        version = "2.0",
+        version = "2.1",
         releaseDate = "11/21/2021",
         since = "1.0",
         contributors = {

@@ -2,7 +2,6 @@ package com.sampleCompany.arki.gameEngine.entities.objects;
 
 import com.sampleCompany.arki.gameEngine.entities.Entity;
 import com.sampleCompany.arki.gameEngine.entities.EntityManager;
-import com.sampleCompany.arki.gameEngine.scenes.SceneInfo;
 import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
@@ -16,7 +15,7 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
  */
 @VersionInfo(
         version = "2.1",
-        releaseDate = "11/21/2021",
+        releaseDate = "11/22/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -55,6 +54,9 @@ public abstract class GameObject extends Entity
 
     // Collision detection
 
+    /**
+     * Invokes appropriate collision methods.
+     */
     public void checkCollision()
     {
         for (GameObject o : EntityManager.getAllGameObjects())
