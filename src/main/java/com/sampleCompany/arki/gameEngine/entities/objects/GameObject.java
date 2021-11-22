@@ -5,6 +5,9 @@ import com.sampleCompany.arki.gameEngine.entities.EntityManager;
 import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Entity subtype that is not used in GUIs, UIs, menus...
  * etc. Objects are entities that are placed within the
@@ -29,8 +32,9 @@ public abstract class GameObject extends Entity
     protected float vertical_speed;
     protected float mass;
 
+    protected ArrayList<GameObject> curCollidingObj;
     protected boolean isSolid;
-    protected boolean isColliding;
+    protected boolean isGrounded;
 
     // class
     public GameObject(String name, String unlocalizedName, float x, float y, int width, int height, boolean isSolid)
@@ -38,7 +42,8 @@ public abstract class GameObject extends Entity
         super(name, unlocalizedName, x, y, width, height);
 
         this.isSolid = isSolid;
-        isColliding = false;
+
+        curCollidingObj = new ArrayList<>();
 
         if (this.getClass().isAnnotationPresent(Physics.class))
         {
@@ -49,9 +54,6 @@ public abstract class GameObject extends Entity
         }
     }
 
-    @Override
-    public void tick() {}
-
     // Collision detection
 
     /**
@@ -59,25 +61,36 @@ public abstract class GameObject extends Entity
      */
     public void checkCollision()
     {
+        // Iterates through all game objects in scene
         for (GameObject o : EntityManager.getAllGameObjects())
         {
+            // current iteration is skipped if the object is equivalent to the class
             if (o.equals(this))
                 continue;
 
+            // Checks if the current iteration is intersecting with the class
             if (o.getCurBounds().intersects(this.getCurBounds()))
             {
-                if (!isColliding)
+                // if the object is being intersecting, that means it's colliding.
+                // checks if collision has already been indexed. If it has, then it invokes on collision stay.
+                // Otherwise, if the collision hasn't been indexed, that means this is the first tick it has
+                // been colliding, in which case onCollision(o) is invoked.
+                if (curCollidingObj.contains(o))
+                {
+                    onCollisionStay(o);
+                }
+                else
+                {
                     onCollision(o);
-
-                onCollisionStay(o);
-                isColliding = true;
+                    curCollidingObj.add(o);
+                }
             }
             else
             {
-                if (isColliding)
+                if (curCollidingObj.contains(o))
                 {
                     onCollisionExit(o);
-                    isColliding = false;
+                    curCollidingObj.remove(o);
                 }
             }
         }
@@ -137,7 +150,8 @@ public abstract class GameObject extends Entity
     {
         this.GRAVITATIONAL_ACCELERATION = (float) ((SceneManager.getCurrentScene().gravitationalConstant * mass) / Math.pow(getHeight() / 2f, 2));
 
-        if (SceneManager.getCurrentScene().sideView)
+        // Makes object fall if it is mid-air, and if the scene is viewed from the side.
+        if (SceneManager.getCurrentScene().sideView && !isGrounded)
             fall();
     }
 

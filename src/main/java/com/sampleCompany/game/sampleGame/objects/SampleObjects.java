@@ -46,13 +46,13 @@ public class SampleObjects extends GameObject
     @Override
     public void onCollision(GameObject collider)
     {
-
+        System.out.println("colliding");
     }
 
     @Override
     public void onCollisionExit(GameObject collider)
     {
-
+        System.out.println("exiting");
     }
 
     @Override
