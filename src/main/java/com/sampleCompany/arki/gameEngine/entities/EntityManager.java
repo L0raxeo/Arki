@@ -157,4 +157,26 @@ public final class EntityManager implements Initializer
         allEntities.remove(e);
     }
 
+    // Utils
+
+    public static ArrayList<GameObject> getAllGameObjects()
+    {
+        ArrayList<GameObject> allGameObjects = new ArrayList<>();
+
+        for (Entity o : EntityManager.getAllEntities())
+        {
+            if (!o.getClass().isAssignableFrom(GameObject.class))
+                allGameObjects.add((GameObject) o);
+        }
+
+        return allGameObjects;
+    }
+
+    // Getters
+
+    public static ArrayList<Entity> getAllEntities()
+    {
+        return allEntities;
+    }
+
 }

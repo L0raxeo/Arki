@@ -1,6 +1,7 @@
 package com.sampleCompany.arki.gameEngine.entities.objects;
 
 import com.sampleCompany.arki.gameEngine.entities.Entity;
+import com.sampleCompany.arki.gameEngine.entities.EntityManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 /**
@@ -22,11 +23,72 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 public abstract class GameObject extends Entity
 {
 
+    protected boolean isColliding;
+
     // class
     public GameObject(String name, String unlocalizedName, float x, float y, int width, int height)
     {
         super(name, unlocalizedName, x, y, width, height);
+
+        isColliding = false;
     }
+
+    @Override
+    public void tick()
+    {
+        checkCollision();
+    }
+
+    // Collision detection
+
+    public void checkCollision()
+    {
+        for (GameObject o : EntityManager.getAllGameObjects())
+        {
+            if (o.equals(this))
+                continue;
+
+            if (o.getCurBounds().intersects(this.getCurBounds()))
+            {
+                if (!isColliding)
+                    onCollision(o);
+
+                onCollisionStay(o);
+                isColliding = true;
+            }
+            else
+            {
+                if (isColliding)
+                {
+                    onCollisionExit(o);
+                    isColliding = false;
+                }
+            }
+        }
+    }
+
+    /**
+     * Invoked when this object collides with another object.
+     */
+    public void onCollision(GameObject collider)
+    {
+
+    }
+
+    /**
+     * Invoked when this object exits collision with another object.
+     */
+    public void onCollisionExit(GameObject collider)
+    {
+
+    }
+
+    /**
+     * Invoked recursively during an object's collision.
+     */
+    public void onCollisionStay(GameObject collider) {}
+
+    // Move methods
 
     /**
      * Moves object according to speed parameter on x-axis.

@@ -45,7 +45,7 @@ public abstract class Entity
         this.yWorld = y;
         this.width = width;
         this.height = height;
-        this.bounds = new Rectangle((int) x, (int) y, width, height);
+        this.bounds = new Rectangle(getWorldX(), getWorldX(), width, height);
 
         awake();
     }
@@ -53,12 +53,12 @@ public abstract class Entity
     /**
      * Invoked on registry into entity manager.
      */
-    public void awake() {}
+    protected void awake() {}
 
     /**
      * Invoked on class instantiation.
      */
-    public void start() {}
+    protected void start() {}
 
     /**
      * Updates entity
@@ -91,6 +91,11 @@ public abstract class Entity
     }
 
     // Getters
+
+    public Rectangle getCurBounds()
+    {
+        return new Rectangle(getX(), getY(), getWidth(), getHeight());
+    }
 
     // Rendering position
 
