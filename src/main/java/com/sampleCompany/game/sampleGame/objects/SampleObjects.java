@@ -1,11 +1,15 @@
 package com.sampleCompany.game.sampleGame.objects;
 
 import com.sampleCompany.arki.gameEngine.entities.objects.GameObject;
-import com.sampleCompany.arki.gameEngine.entities.objects.Physics;
+import com.sampleCompany.arki.gameEngine.entities.objects.physics.Physics;
+import com.sampleCompany.arki.gameEngine.entities.objects.physics.collision.Collider;
 import com.sampleCompany.arki.gameEngine.gfx.Animation;
+import com.sampleCompany.arki.gameEngine.input.keyboard.KeyManager;
 import com.sampleCompany.arki.gameEngine.utils.FileLoader;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.Objects;
 
 @Physics(GRAVITATIONAL_ACCELERATION = 1, TERMINAL_VELOCITY = 300, mass = 5)
 public class SampleObjects extends GameObject
@@ -33,8 +37,22 @@ public class SampleObjects extends GameObject
     @Override
     public void tick()
     {
-        super.checkCollision();
         animation.tick();
+
+        if (!Objects.equals(unlocalizedName, "baseCreature1"))
+        {
+            if (KeyManager.isHeld(KeyEvent.VK_LEFT))
+                moveX(-2);
+            else if (KeyManager.isHeld(KeyEvent.VK_RIGHT))
+                moveX(2);
+        }
+        else
+        {
+            if (KeyManager.isHeld('a'))
+                moveX(-2);
+            else if (KeyManager.isHeld('d'))
+                moveX(2);
+        }
     }
 
     @Override
@@ -44,19 +62,19 @@ public class SampleObjects extends GameObject
     }
 
     @Override
-    public void onCollision(GameObject collider)
+    public void onCollision(Collider collider)
     {
         System.out.println("colliding");
     }
 
     @Override
-    public void onCollisionExit(GameObject collider)
+    public void onCollisionExit(Collider collider)
     {
         System.out.println("exiting");
     }
 
     @Override
-    public void onCollisionStay(GameObject collider)
+    public void onCollisionStay(Collider collider)
     {
 
     }

@@ -1,5 +1,6 @@
 package com.sampleCompany.arki.gameEngine.entities;
 
+import com.sampleCompany.arki.gameEngine.entities.objects.GameObject;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 import java.awt.*;
@@ -12,8 +13,8 @@ import java.awt.*;
  * @author Lorcan A. Cheng
  */
 @VersionInfo(
-        version = "1.0",
-        releaseDate = "11/21/2021",
+        version = "2.1",
+        releaseDate = "11/24/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -29,6 +30,7 @@ public abstract class Entity
     protected float xWorld, yWorld;
     protected float xDisplay, yDisplay;
     protected int width, height;
+    protected float xCenter, yCenter;
     protected Rectangle bounds;
 
     /**
@@ -46,6 +48,8 @@ public abstract class Entity
         this.width = width;
         this.height = height;
         this.bounds = new Rectangle(getWorldX(), getWorldX(), width, height);
+
+        setX(getX());
 
         awake();
     }
@@ -79,6 +83,16 @@ public abstract class Entity
     public void destroy()
     {
         active = false;
+
+        // update physics
+        if (this instanceof GameObject)
+        {
+            for (GameObject o : EntityManager.getAllGameObjects())
+            {
+                o.checkCollision((GameObject) this);
+            }
+        }
+
         onDestroy();
     }
 
@@ -97,7 +111,7 @@ public abstract class Entity
         return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 
-    // Rendering position
+    // World Positions
 
     public int getX()
     {
@@ -109,7 +123,15 @@ public abstract class Entity
         return (int) yWorld;
     }
 
-    // World position
+    public int getCenterX()
+    {
+        return (int) xCenter;
+    }
+
+    public int getCenterY()
+    {
+        return (int) yCenter;
+    }
 
     public int getWorldX()
     {
@@ -163,11 +185,13 @@ public abstract class Entity
     public void setX(int x)
     {
         this.xWorld = x;
+        this.xCenter = xWorld + (width / 2f);
     }
 
     public void setY(int y)
     {
         this.yWorld = y;
+        this.yCenter = yWorld + (height / 2f);
     }
 
     public void setWidth(int width)

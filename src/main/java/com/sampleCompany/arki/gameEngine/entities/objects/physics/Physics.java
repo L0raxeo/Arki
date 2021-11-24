@@ -1,4 +1,4 @@
-package com.sampleCompany.arki.gameEngine.entities.objects;
+package com.sampleCompany.arki.gameEngine.entities.objects.physics;
 
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
  */
 @VersionInfo(
         version = "2.1",
-        releaseDate = "11/22/2021",
+        releaseDate = "11/24/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"

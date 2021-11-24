@@ -2,10 +2,14 @@ package com.sampleCompany.arki.gameEngine.entities.objects;
 
 import com.sampleCompany.arki.gameEngine.entities.Entity;
 import com.sampleCompany.arki.gameEngine.entities.EntityManager;
+import com.sampleCompany.arki.gameEngine.entities.objects.physics.collision.Collider;
+import com.sampleCompany.arki.gameEngine.entities.objects.physics.collision.CollisionType;
+import com.sampleCompany.arki.gameEngine.entities.objects.physics.Physics;
 import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entity subtype that is not used in GUIs, UIs, menus...
@@ -17,7 +21,7 @@ import java.util.ArrayList;
  */
 @VersionInfo(
         version = "2.1",
-        releaseDate = "11/22/2021",
+        releaseDate = "11/24/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -31,9 +35,8 @@ public abstract class GameObject extends Entity
     protected float vertical_speed;
     protected float mass;
 
-    protected ArrayList<GameObject> curCollidingObj;
+    public List<Collider> allColliders;
     protected boolean isSolid;
-    protected boolean isGrounded;
 
     // class
     public GameObject(String name, String unlocalizedName, float x, float y, int width, int height, boolean isSolid)
@@ -42,7 +45,7 @@ public abstract class GameObject extends Entity
 
         this.isSolid = isSolid;
 
-        curCollidingObj = new ArrayList<>();
+        allColliders = new ArrayList<>();
 
         if (this.getClass().isAnnotationPresent(Physics.class))
         {
@@ -57,48 +60,59 @@ public abstract class GameObject extends Entity
 
     /**
      * Invokes appropriate collision methods.
+     *
+     * @return null if there is no collision
      */
-    public void checkCollision()
+    public Collider checkCollision(GameObject o)
     {
-        // Iterates through all game objects in scene
-        for (GameObject o : EntityManager.getAllGameObjects())
-        {
-            // current iteration is skipped if the object is equivalent to the class
-            if (o.equals(this))
-                continue;
+        Collider collider = null;
 
-            // Checks if the current iteration is intersecting with the class
-            if (o.getCurBounds().intersects(this.getCurBounds()))
+        for (Collider c : allColliders)
+            if (c.gameObject.equals(o)) collider = c;
+
+        if (o.equals(this))
+            return null;
+
+        if (!o.isActive())
+        {
+            onCollisionExit(collider);
+            return null;
+        }
+
+        if (o.getCurBounds().intersects(this.getCurBounds()))
+        {
+            CollisionType collisionType = null;
+
+            if (this.getY() + this.getHeight() < o.yCenter && this.getX() + this.getWidth() > o.getX() && this.getX() < o.getX() + o.getWidth()) collisionType = CollisionType.BOTTOM;
+            else if (this.getY() > o.yCenter && this.getX() + this.getWidth() > o.getX() && this.getX() < o.getX() + o.getWidth()) collisionType = CollisionType.TOP;
+            else if (this.getX() + this.getWidth() < o.xCenter && this.getY() + this.getHeight() > o.getY() && this.getY() < o.getY() + o.getHeight()) collisionType = CollisionType.RIGHT;
+            else if (this.getX() > o.xCenter && this.getY() + this.getHeight() > o.getY() && this.getY() < o.getY() + o.getHeight()) collisionType = CollisionType.LEFT;
+
+            if (allColliders.contains(collider))
             {
-                // if the object is being intersecting, that means it's colliding.
-                // checks if collision has already been indexed. If it has, then it invokes on collision stay.
-                // Otherwise, if the collision hasn't been indexed, that means this is the first tick it has
-                // been colliding, in which case onCollision(o) is invoked.
-                if (curCollidingObj.contains(o))
-                {
-                    onCollisionStay(o);
-                }
-                else
-                {
-                    onCollision(o);
-                    curCollidingObj.add(o);
-                }
+                onCollisionStay(collider);
             }
             else
             {
-                if (curCollidingObj.contains(o))
-                {
-                    onCollisionExit(o);
-                    curCollidingObj.remove(o);
-                }
+                onCollision(collider);
+                allColliders.add(new Collider(o, collisionType));
             }
+
+            return collider;
         }
+        else if (allColliders.contains(collider))
+        {
+            onCollisionExit(collider);
+            allColliders.remove(collider);
+        }
+
+        return null;
     }
 
     /**
      * Invoked when this object collides with another object.
      */
-    public void onCollision(GameObject collider)
+    public void onCollision(Collider collider)
     {
 
     }
@@ -106,7 +120,7 @@ public abstract class GameObject extends Entity
     /**
      * Invoked when this object exits collision with another object.
      */
-    public void onCollisionExit(GameObject collider)
+    public void onCollisionExit(Collider collider)
     {
 
     }
@@ -114,44 +128,101 @@ public abstract class GameObject extends Entity
     /**
      * Invoked recursively during an object's collision.
      */
-    public void onCollisionStay(GameObject collider) {}
+    public void onCollisionStay(Collider collider) {}
 
     // Move methods
 
     /**
      * Moves object according to speed parameter on x-axis.
+     * @return whether it was able to move successfully.
      */
-    public void moveX(int xSpeed)
+    public boolean moveX(int xSpeed)
     {
+        if (xSpeed == 0)
+            return true;
+
+        for (GameObject o : EntityManager.getAllGameObjects())
+        {
+            if (xSpeed > 0 && this.getX() + this.getWidth() == o.getX() + 1)
+                return true;
+            else if (xSpeed < 0 && this.getX() == (o.getX() + o.getWidth()) - 1)
+                return false;
+
+            Collider collider = this.checkCollision(o);
+
+            if (collider != null && xSpeed > 0 && this.getX() != o.getX() - this.getWidth() - 1 && collider.type == CollisionType.RIGHT)
+            {
+                this.setX(o.getX() - this.getWidth() - 1);
+                return false;
+            }
+            else if (collider != null && xSpeed < 0 && this.getX() != o.getX() + o.getWidth() - 1 && collider.type == CollisionType.LEFT)
+            {
+                this.setX(o.getX() + o.getWidth() - 1);
+                return false;
+            }
+        }
+
         setX(super.getX() + xSpeed);
+        return true;
     }
 
     /**
      * Moves object according to speed parameter on y-axis.
+     * @return whether it was able to move successfully.
      */
-    public void moveY(int ySpeed)
+    public boolean moveY(int ySpeed)
     {
+        if (ySpeed == 0)
+            return true;
+
+        for (GameObject o : EntityManager.getAllGameObjects())
+        {
+            if (ySpeed > 0 && this.getY() == o.getY() - (this.getHeight() - 1))
+                return false;
+            else if (ySpeed < 0 && this.getY() == o.getY() + (o.getHeight() - 1))
+                return false;
+
+            Collider collider = this.checkCollision(o);
+
+            if (collider != null && ySpeed > 0 && this.getY() != o.getY() - (this.getHeight() - 1) && collider.type == CollisionType.TOP)
+            {
+                this.setY(o.getY() - (this.getHeight() - 1));
+                return false;
+            }
+            else if (collider != null && ySpeed < 0 && this.getY() != o.getY() + (o.getHeight() - 1) && collider.type == CollisionType.BOTTOM)
+            {
+                this.setY(o.getY() + (o.getHeight() - 1));
+                return false;
+            }
+        }
+
         setY(super.getY() + ySpeed);
+        return true;
     }
 
     /**
-     * Moves object on both x and y axis according to paramters.
+     * Moves object on both x and y-axis according to parameters.
      */
     public void move(int xSpeed, int ySpeed)
     {
-        setX(super.getX() + xSpeed);
-        setY(super.getY() + ySpeed);
+        moveX(xSpeed);
+        moveY(ySpeed);
     }
 
     // Physics
 
+    /**
+     * Updates game object physics.
+     */
     public void updatePhysics()
     {
         this.GRAVITATIONAL_ACCELERATION = (float) ((SceneManager.getCurrentScene().gravitationalConstant * mass) / Math.pow(getHeight() / 2f, 2));
 
-        // Makes object fall if it is mid-air, and if the scene is viewed from the side.
-        if (SceneManager.getCurrentScene().sideView && !isGrounded)
+        // means that the object is currently in collision
+        if (SceneManager.getCurrentScene().sideView)
+        {
             fall();
+        }
     }
 
     protected void fall()
@@ -161,7 +232,11 @@ public abstract class GameObject extends Entity
         if (this.vertical_speed > TERMINAL_VELOCITY)
             this.vertical_speed = TERMINAL_VELOCITY;
 
-        this.moveY((int) this.vertical_speed);
+        if (!this.moveY((int) this.vertical_speed))
+        {
+            GRAVITATIONAL_ACCELERATION = 0;
+            vertical_speed = 0;
+        }
     }
 
 }
