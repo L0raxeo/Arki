@@ -5,6 +5,8 @@ import com.sampleCompany.arki.gameEngine.entities.objects.physics.Physics;
 import com.sampleCompany.arki.gameEngine.entities.objects.physics.collision.Collider;
 import com.sampleCompany.arki.gameEngine.gfx.Animation;
 import com.sampleCompany.arki.gameEngine.input.keyboard.KeyManager;
+import com.sampleCompany.arki.gameEngine.sfx.AudioClip;
+import com.sampleCompany.arki.gameEngine.sfx.SoundManager;
 import com.sampleCompany.arki.gameEngine.utils.FileLoader;
 
 import java.awt.*;
@@ -17,6 +19,8 @@ public class SampleObjects extends GameObject
 
     private Animation animation;
 
+    private AudioClip sample_sfx;
+
     public SampleObjects(String name, String unlocalizedName, float x, float y, int width, int height)
     {
         super(name, unlocalizedName, x, y, width, height, true);
@@ -26,6 +30,7 @@ public class SampleObjects extends GameObject
     public void awake()
     {
         animation = new Animation(150, FileLoader.loadImage("/assets/missing_texture_0.png"), FileLoader.loadImage("/assets/missing_texture_1.png"));
+        sample_sfx = new AudioClip("sample_sfx", FileLoader.loadFile("/assets"));
     }
 
     @Override
@@ -38,6 +43,9 @@ public class SampleObjects extends GameObject
     public void tick()
     {
         animation.tick();
+
+        if (KeyManager.onPress('1'))
+            SoundManager.play(sample_sfx, 1);
 
         if (!Objects.equals(unlocalizedName, "baseCreature1"))
         {

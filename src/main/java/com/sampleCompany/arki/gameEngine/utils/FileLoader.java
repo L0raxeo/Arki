@@ -3,6 +3,8 @@ package com.sampleCompany.arki.gameEngine.utils;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -238,6 +240,14 @@ public class FileLoader
                 }
             }
         }
+    }
+
+    /**
+     * @return file associated with path as a file object.
+     */
+    public static File loadFile(String path)
+    {
+        return new File(Objects.requireNonNull(FileLoader.class.getResource(path)).getFile());
     }
 
     /**

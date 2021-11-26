@@ -1,6 +1,7 @@
 package com.sampleCompany.arki.gameEngine.entities;
 
 import com.sampleCompany.arki.gameEngine.entities.objects.GameObject;
+import com.sampleCompany.arki.gameEngine.utils.Vec2;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 import java.awt.*;
@@ -39,6 +40,7 @@ public abstract class Entity
     protected boolean active = true;
 
     // class
+
     public Entity(String name, String unlocalizedName, float x, float y, int width, int height)
     {
         this.name = name;
@@ -47,7 +49,52 @@ public abstract class Entity
         this.yWorld = y;
         this.width = width;
         this.height = height;
-        this.bounds = new Rectangle(getWorldX(), getWorldX(), width, height);
+        this.bounds = new Rectangle(getWorldX(), getWorldY(), width, height);
+
+        setX(getX());
+
+        awake();
+    }
+
+    public Entity(String name, String unlocalizedName, Vec2 position, Vec2 dimensions)
+    {
+        this.name = name;
+        this.unlocalizedName = unlocalizedName;
+        this.xWorld = position.a();
+        this.yWorld = position.b();
+        this.width = (int) dimensions.a();
+        this.height = (int) dimensions.b();
+        this.bounds = new Rectangle(getWorldX(), getWorldY(), width, height);
+
+        setX(getX());
+
+        awake();
+    }
+
+    public Entity(String name, String unlocalizedName, Vec2 position, int width, int height)
+    {
+        this.name = name;
+        this.unlocalizedName = unlocalizedName;
+        this.xWorld = position.a();
+        this.yWorld = position.b();
+        this.width = width;
+        this.height = height;
+        this.bounds = new Rectangle(getWorldX(), getWorldY(), width, height);
+
+        setX(getX());
+
+        awake();
+    }
+
+    public Entity(String name, String unlocalizedName, float x, float y, Vec2 dimensions)
+    {
+        this.name = name;
+        this.unlocalizedName = unlocalizedName;
+        this.xWorld = x;
+        this.yWorld = y;
+        this.width = (int) dimensions.a();
+        this.height = (int) dimensions.b();
+        this.bounds = new Rectangle(getWorldX(), getWorldY(), width, height);
 
         setX(getX());
 
