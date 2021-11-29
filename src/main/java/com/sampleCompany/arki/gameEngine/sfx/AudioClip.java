@@ -1,5 +1,7 @@
 package com.sampleCompany.arki.gameEngine.sfx;
 
+import com.sampleCompany.arki.gameEngine.utils.FileLoader;
+
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -25,10 +27,10 @@ public class AudioClip
      * Constructs a new audio clip, using the given resource name to load audio
      * data from a classpath resource.
      */
-    public AudioClip(String name, File rawFile)
+    public AudioClip(String name, String path)
     {
         this.name = name;
-        this.rawFile = rawFile;
+        FileLoader.loadFile(path);
 
         try
         {

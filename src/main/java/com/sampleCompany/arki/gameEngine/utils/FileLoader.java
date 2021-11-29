@@ -1,10 +1,9 @@
 package com.sampleCompany.arki.gameEngine.utils;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -245,9 +244,10 @@ public class FileLoader
     /**
      * @return file associated with path as a file object.
      */
-    public static File loadFile(String path)
+    public static InputStream loadFile(String path)
     {
-        return new File(Objects.requireNonNull(FileLoader.class.getResource(path)).getFile());
+        System.out.println(path);
+        return Objects.requireNonNull(FileLoader.class.getClassLoader().getResourceAsStream(path));
     }
 
     /**
@@ -268,6 +268,23 @@ public class FileLoader
         }
 
         return null;
+    }
+
+    public static void playAudio(String path)
+    {
+        try
+        {
+            AudioInputStream audioInputStream =
+                    AudioSystem.getAudioInputStream(new BufferedInputStream(Objects.requireNonNull(FileLoader.class.getClassLoader().getResourceAsStream(path))));
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        }
+        catch (LineUnavailableException | IOException | UnsupportedAudioFileException evt)
+        {
+            evt.printStackTrace();
+        }
     }
 
 }
