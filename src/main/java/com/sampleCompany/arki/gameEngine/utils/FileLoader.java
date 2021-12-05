@@ -245,7 +245,7 @@ public class FileLoader
      */
     public static File loadResourceFile(String path)
     {
-        return new File(Objects.requireNonNull(FileLoader.class.getResource(path)).getPath());
+        return new File(Objects.requireNonNull(FileLoader.class.getResource("/" + path)).getPath());
     }
 
     /**
@@ -265,7 +265,7 @@ public class FileLoader
     {
         try
         {
-            return ImageIO.read(Objects.requireNonNull(FileLoader.class.getResource(path)));
+            return ImageIO.read(Objects.requireNonNull(FileLoader.class.getResource("/" + path)));
         }
         catch (IOException e)
         {
