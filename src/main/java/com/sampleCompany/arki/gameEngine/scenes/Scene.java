@@ -3,7 +3,6 @@ package com.sampleCompany.arki.gameEngine.scenes;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 import java.awt.*;
-import java.util.Objects;
 
 /**
  * World containing entities within the game.
@@ -13,8 +12,8 @@ import java.util.Objects;
  * @author Lorcan A. Cheng
  */
 @VersionInfo(
-        version = "1.0",
-        releaseDate = "11/13/2021",
+        version = "2.1",
+        releaseDate = "12/5/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"

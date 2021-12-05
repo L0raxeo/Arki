@@ -1,54 +1,71 @@
 package com.sampleCompany.arki.gameEngine.sfx;
 
 import com.sampleCompany.arki.gameEngine.utils.FileLoader;
+import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 import javax.sound.sampled.*;
-import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
+/**
+ * An audio clip object contains all the
+ * attributes of an audio file that are
+ * used to define how it's played. The
+ * object itself also automatically handles
+ * and creates the clip and audio input
+ * stream.
+ *
+ * @author Lorcan A. Cheng
+ */
+@VersionInfo(
+        version = "2.1",
+        releaseDate = "12/5/2021",
+        since = "2.1",
+        contributors = {
+                "Lorcan Andrew Cheng"
+        }
+)
 public class AudioClip
 {
 
-    public String name;
-
-    public File rawFile;
+    public AudioInputStream audioInputStream;
     public Clip clip;
 
-    // Volume
-    public FloatControl gainControl;
-    public float range;
+    // Attributes
 
-    public AudioFormat format;
-    public byte[] samples;
+    public final String name;
+    public final String path;
+    public final float volume;
+
+    // class
 
     /**
-     * Constructs a new audio clip, using the given resource name to load audio
-     * data from a classpath resource.
+     * @param name the reference name of the audio clip
+     * @param path the path of the raw wave file (not a resource)
+     * @param volume of the wave file at which it will be played at
      */
-    public AudioClip(String name, String path)
+    public AudioClip(String name, String path, float volume)
     {
         this.name = name;
-        FileLoader.loadFile(path);
+        this.path = path;
+        this.volume = volume;
 
+        createClip();
+    }
+
+    /**
+     * Create the clip by initializing the audio input stream,
+     * and then using it to initialize and open the clip;
+     */
+    private void createClip()
+    {
         try
         {
-            AudioInputStream audioInputStream =
-                    AudioSystem.getAudioInputStream(new BufferedInputStream(Objects.requireNonNull(rawFile.toURI().toURL().openStream())));
+            audioInputStream = AudioSystem.getAudioInputStream(FileLoader.loadFile(path));
 
-            this.format = audioInputStream.getFormat();
-            this.samples = audioInputStream.readAllBytes();
-
-            // Clip
-            Clip clip = AudioSystem.getClip();
+            clip = AudioSystem.getClip();
             clip.open(audioInputStream);
-
-            this.clip = clip;
-            this.gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            this.range = gainControl.getMaximum() - gainControl.getMinimum();
         }
-        catch (LineUnavailableException | IOException | UnsupportedAudioFileException e)
+        catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
         {
             e.printStackTrace();
         }
@@ -56,52 +73,14 @@ public class AudioClip
 
     // Getters
 
-    /**
-     * @return raw file.
-     */
-    public File getRawFile()
-    {
-        return rawFile;
-    }
-
-    /**
-     * @return playable clip.
-     */
     public Clip getClip()
     {
         return clip;
     }
 
-    /**
-     * @return audio clip float control.
-     */
-    public FloatControl getGainControl()
+    public AudioInputStream getAudioInputStream()
     {
-        return gainControl;
-    }
-
-    /**
-     * @return range of volume as a float.
-     */
-    public final float getRange()
-    {
-        return range;
-    }
-
-    /**
-     * @return audio format of file.
-     */
-    public AudioFormat getFormat()
-    {
-        return format;
-    }
-
-    /**
-     * @return samples.
-     */
-    public byte[] getSamples()
-    {
-        return samples;
+        return audioInputStream;
     }
 
 }

@@ -2,9 +2,9 @@ package com.sampleCompany.arki.gameEngine.entities.objects;
 
 import com.sampleCompany.arki.gameEngine.entities.Entity;
 import com.sampleCompany.arki.gameEngine.entities.EntityManager;
+import com.sampleCompany.arki.gameEngine.entities.objects.physics.Physics;
 import com.sampleCompany.arki.gameEngine.entities.objects.physics.collision.Collider;
 import com.sampleCompany.arki.gameEngine.entities.objects.physics.collision.CollisionType;
-import com.sampleCompany.arki.gameEngine.entities.objects.physics.Physics;
 import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
@@ -21,7 +21,7 @@ import java.util.List;
  */
 @VersionInfo(
         version = "2.1",
-        releaseDate = "11/24/2021",
+        releaseDate = "12/5/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"

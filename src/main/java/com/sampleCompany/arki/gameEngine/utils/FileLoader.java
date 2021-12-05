@@ -1,7 +1,6 @@
 package com.sampleCompany.arki.gameEngine.utils;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
@@ -15,8 +14,8 @@ import java.util.Objects;
  * @author Lorcan A. Cheng
  */
 @VersionInfo(
-        version = "1.0",
-        releaseDate = "11/10/2021",
+        version = "2.1",
+        releaseDate = "12/5/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -242,12 +241,19 @@ public class FileLoader
     }
 
     /**
-     * @return file associated with path as a file object.
+     * @return resource associated with path as a file object as a file object.
      */
-    public static InputStream loadFile(String path)
+    public static File loadResourceFile(String path)
     {
-        System.out.println(path);
-        return Objects.requireNonNull(FileLoader.class.getClassLoader().getResourceAsStream(path));
+        return new File(Objects.requireNonNull(FileLoader.class.getResource(path)).getPath());
+    }
+
+    /**
+     * @return raw file associated with path specified in parameters.
+     */
+    public static File loadFile(String path)
+    {
+        return new File(path);
     }
 
     /**
@@ -255,7 +261,7 @@ public class FileLoader
      * associated with the path specified in the
      * parameters.
      */
-    public static BufferedImage loadImage(String path)
+    public static BufferedImage loadResourceImage(String path)
     {
         try
         {
@@ -270,21 +276,18 @@ public class FileLoader
         return null;
     }
 
-    public static void playAudio(String path)
+    public static BufferedImage loadImage(String path)
     {
         try
         {
-            AudioInputStream audioInputStream =
-                    AudioSystem.getAudioInputStream(new BufferedInputStream(Objects.requireNonNull(FileLoader.class.getClassLoader().getResourceAsStream(path))));
-
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
+            return ImageIO.read(new File(path).toURI().toURL().openStream());
         }
-        catch (LineUnavailableException | IOException | UnsupportedAudioFileException evt)
+        catch (IOException e)
         {
-            evt.printStackTrace();
+            e.printStackTrace();
         }
+
+        return null;
     }
 
 }

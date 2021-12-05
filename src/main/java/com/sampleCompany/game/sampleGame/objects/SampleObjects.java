@@ -25,7 +25,7 @@ public class SampleObjects extends GameObject
     @Override
     public void awake()
     {
-        animation = new Animation(150, FileLoader.loadImage("/assets/missing_texture_0.png"), FileLoader.loadImage("/assets/missing_texture_1.png"));
+        animation = new Animation(150, FileLoader.loadResourceImage("assets/missing_texture_0.png"), FileLoader.loadResourceImage("assets/missing_texture_1.png"));
     }
 
     @Override
@@ -45,8 +45,6 @@ public class SampleObjects extends GameObject
                 moveX(-2);
             else if (KeyManager.isHeld(KeyEvent.VK_RIGHT))
                 moveX(2);
-            else if (KeyManager.onPress('i'))
-                FileLoader.playAudio("/assets/sample_audio.wav");
         }
         else
         {
