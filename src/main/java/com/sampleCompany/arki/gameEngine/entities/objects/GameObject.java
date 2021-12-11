@@ -6,6 +6,7 @@ import com.sampleCompany.arki.gameEngine.entities.objects.physics.Physics;
 import com.sampleCompany.arki.gameEngine.entities.objects.physics.collision.Collider;
 import com.sampleCompany.arki.gameEngine.entities.objects.physics.collision.CollisionType;
 import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
+import com.sampleCompany.arki.gameEngine.utils.Vec2;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
 import java.util.ArrayList;
@@ -143,9 +144,9 @@ public abstract class GameObject extends Entity
 
         for (GameObject o : EntityManager.getAllGameObjects())
         {
-            if (xSpeed > 0 && this.getX() + this.getWidth() == o.getX() + 1)
+            if (xSpeed > 0 && this.getX() + this.getWidth() == o.getX() + 1 && this.getY() < o.getY() + o.getHeight() && this.getY() + this.getWidth() > o.getY())
                 return true;
-            else if (xSpeed < 0 && this.getX() == (o.getX() + o.getWidth()) - 1)
+            else if (xSpeed < 0 && this.getX() == (o.getX() + o.getWidth()) - 1 && this.getY() < o.getY() + o.getHeight() && this.getY() + this.getWidth() > o.getY())
                 return false;
 
             Collider collider = this.checkCollision(o);
@@ -166,6 +167,7 @@ public abstract class GameObject extends Entity
         return true;
     }
 
+    // PROBLEM: SANDWICHED OBJECTS COLLIDE AND MOVE POSITIONS ON BOTH TOP AND BOTTOM
     /**
      * Moves object according to speed parameter on y-axis.
      * @return whether it was able to move successfully.
@@ -177,9 +179,9 @@ public abstract class GameObject extends Entity
 
         for (GameObject o : EntityManager.getAllGameObjects())
         {
-            if (ySpeed > 0 && this.getY() == o.getY() - (this.getHeight() - 1))
+            if (ySpeed > 0 && this.getY() == o.getY() - (this.getHeight() - 1) && this.getX() + this.getWidth() > o.getX() && this.getX() < o.getX() + o.getWidth())
                 return false;
-            else if (ySpeed < 0 && this.getY() == o.getY() + (o.getHeight() - 1))
+            else if (ySpeed < 0 && this.getY() == o.getY() + (o.getHeight() - 1) && this.getX() + this.getWidth() > o.getX() && this.getX() < o.getX() + o.getWidth())
                 return false;
 
             Collider collider = this.checkCollision(o);
@@ -201,12 +203,23 @@ public abstract class GameObject extends Entity
     }
 
     /**
-     * Moves object on both x and y-axis according to parameters.
+     * Moves object on both x and y-axis according to values
+     * stored in the parameters.
      */
     public void move(int xSpeed, int ySpeed)
     {
         moveX(xSpeed);
         moveY(ySpeed);
+    }
+
+    /**
+     * Moves object on both x and y-axis by the values stored in
+     * the vector specified in parameters.
+     */
+    public void move(Vec2 vec2)
+    {
+        moveX((int) vec2.a());
+        moveY((int) vec2.b());
     }
 
     // Physics
@@ -237,6 +250,16 @@ public abstract class GameObject extends Entity
             GRAVITATIONAL_ACCELERATION = 0;
             vertical_speed = 0;
         }
+    }
+
+    protected void addForce(float x, float y)
+    {
+        this.vertical_speed -= y;
+    }
+
+    protected void addForce(Vec2 force)
+    {
+
     }
 
 }
