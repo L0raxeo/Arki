@@ -22,6 +22,14 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 public class Collider
 {
 
+    public enum CollisionType
+    {
+        TOP,
+        BOTTOM,
+        LEFT,
+        RIGHT
+    }
+
     public CollisionType type;
     public GameObject gameObject;
 

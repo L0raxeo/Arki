@@ -136,7 +136,8 @@ public abstract class Entity
         {
             for (GameObject o : EntityManager.getAllGameObjects())
             {
-                o.checkCollision((GameObject) this);
+                // Invoke onCollisionExit to object being destroyed
+                o.predictCollision((GameObject) this);
             }
         }
 

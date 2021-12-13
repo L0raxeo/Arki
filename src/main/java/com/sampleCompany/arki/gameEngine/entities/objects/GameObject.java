@@ -4,7 +4,6 @@ import com.sampleCompany.arki.gameEngine.entities.Entity;
 import com.sampleCompany.arki.gameEngine.entities.EntityManager;
 import com.sampleCompany.arki.gameEngine.entities.objects.physics.Physics;
 import com.sampleCompany.arki.gameEngine.entities.objects.physics.collision.Collider;
-import com.sampleCompany.arki.gameEngine.entities.objects.physics.collision.CollisionType;
 import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.Vec2;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
@@ -33,10 +32,13 @@ public abstract class GameObject extends Entity
 
     protected float GRAVITATIONAL_ACCELERATION;
     protected float TERMINAL_VELOCITY;
-    protected float vertical_speed;
+
+    // Net Force (final speed)
+    protected float horizontal_net_force;
+    protected float vertical_net_force;
+
     protected float mass;
 
-    public List<Collider> allColliders;
     protected boolean isSolid;
 
     // class
@@ -46,13 +48,12 @@ public abstract class GameObject extends Entity
 
         this.isSolid = isSolid;
 
-        allColliders = new ArrayList<>();
-
         if (this.getClass().isAnnotationPresent(Physics.class))
         {
             this.GRAVITATIONAL_ACCELERATION = this.getClass().getAnnotation(Physics.class).GRAVITATIONAL_ACCELERATION();
             this.TERMINAL_VELOCITY = this.getClass().getAnnotation(Physics.class).TERMINAL_VELOCITY();
-            this.vertical_speed = 0;
+            this.horizontal_net_force = 0;
+            this.vertical_net_force = 0;
             this.mass = this.getClass().getAnnotation(Physics.class).mass();
         }
     }
@@ -64,49 +65,8 @@ public abstract class GameObject extends Entity
      *
      * @return null if there is no collision
      */
-    public Collider checkCollision(GameObject o)
+    public Collider predictCollision(GameObject o)
     {
-        Collider collider = null;
-
-        for (Collider c : allColliders)
-            if (c.gameObject.equals(o)) collider = c;
-
-        if (o.equals(this))
-            return null;
-
-        if (!o.isActive())
-        {
-            onCollisionExit(collider);
-            return null;
-        }
-
-        if (o.getCurBounds().intersects(this.getCurBounds()))
-        {
-            CollisionType collisionType = null;
-
-            if (this.getY() + this.getHeight() < o.yCenter && this.getX() + this.getWidth() > o.getX() && this.getX() < o.getX() + o.getWidth()) collisionType = CollisionType.BOTTOM;
-            else if (this.getY() > o.yCenter && this.getX() + this.getWidth() > o.getX() && this.getX() < o.getX() + o.getWidth()) collisionType = CollisionType.TOP;
-            else if (this.getX() + this.getWidth() < o.xCenter && this.getY() + this.getHeight() > o.getY() && this.getY() < o.getY() + o.getHeight()) collisionType = CollisionType.RIGHT;
-            else if (this.getX() > o.xCenter && this.getY() + this.getHeight() > o.getY() && this.getY() < o.getY() + o.getHeight()) collisionType = CollisionType.LEFT;
-
-            if (allColliders.contains(collider))
-            {
-                onCollisionStay(collider);
-            }
-            else
-            {
-                onCollision(collider);
-                allColliders.add(new Collider(o, collisionType));
-            }
-
-            return collider;
-        }
-        else if (allColliders.contains(collider))
-        {
-            onCollisionExit(collider);
-            allColliders.remove(collider);
-        }
-
         return null;
     }
 
@@ -139,31 +99,6 @@ public abstract class GameObject extends Entity
      */
     public boolean moveX(int xSpeed)
     {
-        if (xSpeed == 0)
-            return true;
-
-        for (GameObject o : EntityManager.getAllGameObjects())
-        {
-            if (xSpeed > 0 && this.getX() + this.getWidth() == o.getX() + 1 && this.getY() < o.getY() + o.getHeight() && this.getY() + this.getWidth() > o.getY())
-                return true;
-            else if (xSpeed < 0 && this.getX() == (o.getX() + o.getWidth()) - 1 && this.getY() < o.getY() + o.getHeight() && this.getY() + this.getWidth() > o.getY())
-                return false;
-
-            Collider collider = this.checkCollision(o);
-
-            if (collider != null && xSpeed > 0 && this.getX() != o.getX() - this.getWidth() - 1 && collider.type == CollisionType.RIGHT)
-            {
-                this.setX(o.getX() - this.getWidth() - 1);
-                return false;
-            }
-            else if (collider != null && xSpeed < 0 && this.getX() != o.getX() + o.getWidth() - 1 && collider.type == CollisionType.LEFT)
-            {
-                this.setX(o.getX() + o.getWidth() - 1);
-                return false;
-            }
-        }
-
-        setX(super.getX() + xSpeed);
         return true;
     }
 
@@ -174,31 +109,9 @@ public abstract class GameObject extends Entity
      */
     public boolean moveY(int ySpeed)
     {
-        if (ySpeed == 0)
-            return true;
+        if (this.vertical_net_force > TERMINAL_VELOCITY)
+            this.vertical_net_force = TERMINAL_VELOCITY;
 
-        for (GameObject o : EntityManager.getAllGameObjects())
-        {
-            if (ySpeed > 0 && this.getY() == o.getY() - (this.getHeight() - 1) && this.getX() + this.getWidth() > o.getX() && this.getX() < o.getX() + o.getWidth())
-                return false;
-            else if (ySpeed < 0 && this.getY() == o.getY() + (o.getHeight() - 1) && this.getX() + this.getWidth() > o.getX() && this.getX() < o.getX() + o.getWidth())
-                return false;
-
-            Collider collider = this.checkCollision(o);
-
-            if (collider != null && ySpeed > 0 && this.getY() != o.getY() - (this.getHeight() - 1) && collider.type == CollisionType.TOP)
-            {
-                this.setY(o.getY() - (this.getHeight() - 1));
-                return false;
-            }
-            else if (collider != null && ySpeed < 0 && this.getY() != o.getY() + (o.getHeight() - 1) && collider.type == CollisionType.BOTTOM)
-            {
-                this.setY(o.getY() + (o.getHeight() - 1));
-                return false;
-            }
-        }
-
-        setY(super.getY() + ySpeed);
         return true;
     }
 
@@ -222,6 +135,57 @@ public abstract class GameObject extends Entity
         moveY((int) vec2.b());
     }
 
+    /**
+     * Moves the object on the screen according to net force of x and y.
+     */
+    private void applyNetForce(int xForce, int yForce)
+    {
+        ArrayList<Collider> allCollisions = new ArrayList<>();
+        boolean willCollide = false;
+
+        for (GameObject o : EntityManager.getAllGameObjects())
+        {
+            Collider collider = predictCollision(o);
+
+            if (collider != null)
+            {
+                allCollisions.add(collider);
+            }
+        }
+
+        if (willCollide)
+        {
+            for (Collider c : allCollisions)
+            {
+                if (xForce > 0)
+                {
+
+                }
+                else if (xForce < 0)
+                {
+
+                }
+
+                if (yForce > 0)
+                {
+
+                }
+                else if (yForce < 0)
+                {
+
+                }
+            }
+        }
+        else
+        {
+            this.setX(this.getX() + xForce);
+            this.setY(this.getY() + yForce);
+        }
+
+        horizontal_net_force = 0;
+        vertical_net_force = 0;
+    }
+
     // Physics
 
     /**
@@ -236,25 +200,23 @@ public abstract class GameObject extends Entity
         {
             fall();
         }
+
+        applyNetForce((int) horizontal_net_force, (int) vertical_net_force);
     }
 
     protected void fall()
     {
-        this.vertical_speed += GRAVITATIONAL_ACCELERATION;
+        this.vertical_net_force += GRAVITATIONAL_ACCELERATION;
 
-        if (this.vertical_speed > TERMINAL_VELOCITY)
-            this.vertical_speed = TERMINAL_VELOCITY;
-
-        if (!this.moveY((int) this.vertical_speed))
+        if (!this.moveY((int) this.vertical_net_force))
         {
             GRAVITATIONAL_ACCELERATION = 0;
-            vertical_speed = 0;
         }
     }
 
     protected void addForce(float x, float y)
     {
-        this.vertical_speed -= y;
+        this.vertical_net_force -= y;
     }
 
     protected void addForce(Vec2 force)
