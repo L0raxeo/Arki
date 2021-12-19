@@ -8,8 +8,8 @@ import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.Vec2;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
 
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Entity subtype that is not used in GUIs, UIs, menus...
@@ -30,12 +30,15 @@ import java.util.List;
 public abstract class GameObject extends Entity
 {
 
+    // Gravity stuff
     protected float GRAVITATIONAL_ACCELERATION;
     protected float TERMINAL_VELOCITY;
 
     // Net Force (final speed)
     protected float horizontal_net_force;
     protected float vertical_net_force;
+
+    protected ArrayList<Collider> collisions = new ArrayList<>();
 
     protected float mass;
 
@@ -63,11 +66,45 @@ public abstract class GameObject extends Entity
     /**
      * Invokes appropriate collision methods.
      *
+     * Only predicts when the object is destroyed
+     * or once the object is ready to be moved.
+     *
      * @return null if there is no collision
      */
     public Collider predictCollision(GameObject o)
     {
-        return null;
+        if (o.equals(this))
+            return null;
+
+        Collider collider = null;
+        Rectangle newBounds = new Rectangle((int) (getCurBounds().x + this.horizontal_net_force), (int) (getCurBounds().y + this.vertical_net_force), getWidth(), getHeight());
+
+        if (newBounds.intersects(o.getCurBounds()))
+        {
+            //Collision type: up, down, left, right
+            if (newBounds.y + newBounds.height > o.getCurBounds().y && newBounds.x + newBounds.width > o.getX() && newBounds.x < o.getX() + o.getWidth() && newBounds.y + newBounds.height < o.getCenterY())
+            {
+                collider = new Collider(o, Collider.CollisionType.TOP);
+                System.out.println("top");
+            }
+            else if (newBounds.y < o.getY() + o.getHeight() && newBounds.x + newBounds.width > o.getX() && newBounds.x < o.getX() + o.getWidth() && newBounds.y > o.getCenterY())
+            {
+                collider = new Collider(o, Collider.CollisionType.BOTTOM);
+                System.out.println("bottom");
+            }
+            else if (newBounds.x + newBounds.getWidth() > o.getX() && newBounds.y + newBounds.height > o.getY() && newBounds.getY() < o.getY() + o.getHeight() && newBounds.x + newBounds.getWidth() < o.getCenterX())
+            {
+                collider = new Collider(o, Collider.CollisionType.LEFT);
+                System.out.println("left");
+            }
+            else if (newBounds.x < o.getX() + o.getWidth() && newBounds.y + newBounds.height > o.getY() && newBounds.getY() < o.getY() + o.getHeight() && newBounds.x > o.getCenterX())
+            {
+                collider = new Collider(o, Collider.CollisionType.RIGHT);
+                System.out.println("right");
+            }
+        }
+
+        return collider;
     }
 
     /**
@@ -99,6 +136,24 @@ public abstract class GameObject extends Entity
      */
     public boolean moveX(int xSpeed)
     {
+        boolean willCollide = false;
+
+        if (this.horizontal_net_force > TERMINAL_VELOCITY)
+            this.vertical_net_force = TERMINAL_VELOCITY;
+
+        for (GameObject o : EntityManager.getAllGameObjects())
+        {
+            Collider collider = predictCollision(o);
+
+            if (collider != null)
+            {
+                willCollide = true;
+            }
+        }
+
+        if (!willCollide)
+            setX(getX() + xSpeed);
+
         return true;
     }
 
@@ -111,6 +166,18 @@ public abstract class GameObject extends Entity
     {
         if (this.vertical_net_force > TERMINAL_VELOCITY)
             this.vertical_net_force = TERMINAL_VELOCITY;
+
+        for (GameObject o : EntityManager.getAllGameObjects())
+        {
+            Collider collider = predictCollision(o);
+
+            if (collider != null)
+            {
+                return false;
+            }
+        }
+
+        setY(getY() + ySpeed);
 
         return true;
     }
@@ -140,50 +207,7 @@ public abstract class GameObject extends Entity
      */
     private void applyNetForce(int xForce, int yForce)
     {
-        ArrayList<Collider> allCollisions = new ArrayList<>();
-        boolean willCollide = false;
-
-        for (GameObject o : EntityManager.getAllGameObjects())
-        {
-            Collider collider = predictCollision(o);
-
-            if (collider != null)
-            {
-                allCollisions.add(collider);
-            }
-        }
-
-        if (willCollide)
-        {
-            for (Collider c : allCollisions)
-            {
-                if (xForce > 0)
-                {
-
-                }
-                else if (xForce < 0)
-                {
-
-                }
-
-                if (yForce > 0)
-                {
-
-                }
-                else if (yForce < 0)
-                {
-
-                }
-            }
-        }
-        else
-        {
-            this.setX(this.getX() + xForce);
-            this.setY(this.getY() + yForce);
-        }
-
-        horizontal_net_force = 0;
-        vertical_net_force = 0;
+        move(xForce, yForce);
     }
 
     // Physics
@@ -216,7 +240,8 @@ public abstract class GameObject extends Entity
 
     protected void addForce(float x, float y)
     {
-        this.vertical_net_force -= y;
+        this.horizontal_net_force += x;
+        this.vertical_net_force += y;
     }
 
     protected void addForce(Vec2 force)
