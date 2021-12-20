@@ -82,25 +82,21 @@ public abstract class GameObject extends Entity
         if (newBounds.intersects(o.getCurBounds()))
         {
             //Collision type: up, down, left, right
-            if (newBounds.y + newBounds.height > o.getCurBounds().y && newBounds.x + newBounds.width > o.getX() && newBounds.x < o.getX() + o.getWidth() && newBounds.y + newBounds.height < o.getCenterY())
+            if (this.getY() + this.height < o.getCurBounds().y && this.getX() + this.width > o.getX() && this.getX() < o.getX() + o.getWidth())
             {
                 collider = new Collider(o, Collider.CollisionType.TOP);
-                System.out.println("top");
             }
-            else if (newBounds.y < o.getY() + o.getHeight() && newBounds.x + newBounds.width > o.getX() && newBounds.x < o.getX() + o.getWidth() && newBounds.y > o.getCenterY())
+            else if (this.getY() > o.getY() + o.getHeight() && this.getX() + this.width > o.getX() && this.getX() < o.getX() + o.getWidth())
             {
                 collider = new Collider(o, Collider.CollisionType.BOTTOM);
-                System.out.println("bottom");
             }
-            else if (newBounds.x + newBounds.getWidth() > o.getX() && newBounds.y + newBounds.height > o.getY() && newBounds.getY() < o.getY() + o.getHeight() && newBounds.x + newBounds.getWidth() < o.getCenterX())
+            else if (this.getX() + this.width < o.getX() && this.getY() + this.height > o.getY() && this.getY() < o.getY() + o.getHeight())
             {
                 collider = new Collider(o, Collider.CollisionType.LEFT);
-                System.out.println("left");
             }
-            else if (newBounds.x < o.getX() + o.getWidth() && newBounds.y + newBounds.height > o.getY() && newBounds.getY() < o.getY() + o.getHeight() && newBounds.x > o.getCenterX())
+            else if (this.getX() > o.getX() + o.getWidth() && this.getY() + this.height > o.getY() && this.getY() < o.getY() + o.getHeight())
             {
                 collider = new Collider(o, Collider.CollisionType.RIGHT);
-                System.out.println("right");
             }
         }
 
