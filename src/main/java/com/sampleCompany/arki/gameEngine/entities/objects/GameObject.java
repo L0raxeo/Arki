@@ -4,6 +4,7 @@ import com.sampleCompany.arki.gameEngine.entities.Entity;
 import com.sampleCompany.arki.gameEngine.entities.EntityManager;
 import com.sampleCompany.arki.gameEngine.entities.objects.physics.Physics;
 import com.sampleCompany.arki.gameEngine.entities.objects.physics.collision.Collider;
+import com.sampleCompany.arki.gameEngine.input.keyboard.KeyManager;
 import com.sampleCompany.arki.gameEngine.scenes.SceneManager;
 import com.sampleCompany.arki.gameEngine.utils.Vec2;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
  */
 @VersionInfo(
         version = "2.1",
-        releaseDate = "12/5/2021",
+        releaseDate = "12/20/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -76,27 +77,37 @@ public abstract class GameObject extends Entity
         if (o.equals(this))
             return null;
 
+        if (!o.isActive())
+        {
+            onCollisionExit(o);
+            collisions.removeIf(c -> c.gameObject == o);
+        }
+
         Collider collider = null;
         Rectangle newBounds = new Rectangle((int) (getCurBounds().x + this.horizontal_net_force), (int) (getCurBounds().y + this.vertical_net_force), getWidth(), getHeight());
 
         if (newBounds.intersects(o.getCurBounds()))
         {
             //Collision type: up, down, left, right
-            if (this.getY() + this.height < o.getCurBounds().y && this.getX() + this.width > o.getX() && this.getX() < o.getX() + o.getWidth())
+            if (this.getY() + this.height < o.getCenterY())
             {
                 collider = new Collider(o, Collider.CollisionType.TOP);
             }
-            else if (this.getY() > o.getY() + o.getHeight() && this.getX() + this.width > o.getX() && this.getX() < o.getX() + o.getWidth())
+            else if (this.getY() > o.getCenterY())
             {
                 collider = new Collider(o, Collider.CollisionType.BOTTOM);
             }
-            else if (this.getX() + this.width < o.getX() && this.getY() + this.height > o.getY() && this.getY() < o.getY() + o.getHeight())
+            else if (this.getX() + this.width < o.getCenterX())
             {
                 collider = new Collider(o, Collider.CollisionType.LEFT);
             }
-            else if (this.getX() > o.getX() + o.getWidth() && this.getY() + this.height > o.getY() && this.getY() < o.getY() + o.getHeight())
+            else if (this.getX() > o.getCenterX())
             {
                 collider = new Collider(o, Collider.CollisionType.RIGHT);
+            }
+            else
+            {
+                collider = new Collider(o, Collider.CollisionType.UNKNOWN);
             }
         }
 
@@ -114,7 +125,7 @@ public abstract class GameObject extends Entity
     /**
      * Invoked when this object exits collision with another object.
      */
-    public void onCollisionExit(Collider collider)
+    public void onCollisionExit(GameObject gameObject)
     {
 
     }
@@ -130,12 +141,12 @@ public abstract class GameObject extends Entity
      * Moves object according to speed parameter on x-axis.
      * @return whether it was able to move successfully.
      */
-    public boolean moveX(int xSpeed)
+    public boolean moveNetForceX(int xSpeed)
     {
-        boolean willCollide = false;
-
-        if (this.horizontal_net_force > TERMINAL_VELOCITY)
-            this.vertical_net_force = TERMINAL_VELOCITY;
+        if (this.horizontal_net_force > 0 && this.horizontal_net_force > TERMINAL_VELOCITY)
+            this.horizontal_net_force = TERMINAL_VELOCITY;
+        else if (this.horizontal_net_force < 0 && this.horizontal_net_force < -TERMINAL_VELOCITY)
+            this.horizontal_net_force = -TERMINAL_VELOCITY;
 
         for (GameObject o : EntityManager.getAllGameObjects())
         {
@@ -143,12 +154,57 @@ public abstract class GameObject extends Entity
 
             if (collider != null)
             {
-                willCollide = true;
+                if (collider.getType() == Collider.CollisionType.LEFT || collider.getType() == Collider.CollisionType.RIGHT)
+                {
+                    // onCollisionStay
+                    if (this.getX() == collider.gameObject.getX() - this.getWidth() + 1 ||
+                            this.getX() == collider.gameObject.getX() + collider.gameObject.getWidth() - 1)
+                    {
+                        onCollisionStay(collider);
+
+                        if (xSpeed > 0 && collider.getType() == Collider.CollisionType.LEFT)
+                        {
+                            horizontal_net_force = 0;
+                        }
+                        else if (xSpeed < 0 && collider.getType() == Collider.CollisionType.RIGHT)
+                        {
+                            horizontal_net_force = 0;
+                        }
+                    }
+                    // onCollision
+                    else if (xSpeed > 0 && collider.getType() == Collider.CollisionType.LEFT)
+                    {
+                        this.setX(collider.gameObject.getX() - this.getWidth() + 1);
+                        horizontal_net_force = 0;
+                        onCollision(collider);
+                        collisions.add(collider);
+                    }
+                    else if (xSpeed < 0 && collider.getType() == Collider.CollisionType.RIGHT)
+                    {
+                        this.setX(collider.gameObject.getX() + collider.gameObject.getWidth() - 1);
+                        horizontal_net_force = 0;
+                        onCollision(collider);
+                        collisions.add(collider);
+                    }
+
+                    return false;
+                }
+            }
+            // onCollisionExit
+            else
+            {
+                for (Collider c : collisions)
+                {
+                    if (c.gameObject == o)
+                    {
+                        onCollisionExit(o);
+                        collisions.remove(c);
+                    }
+                }
             }
         }
 
-        if (!willCollide)
-            setX(getX() + xSpeed);
+        setX(getX() + xSpeed);
 
         return true;
     }
@@ -158,10 +214,12 @@ public abstract class GameObject extends Entity
      * Moves object according to speed parameter on y-axis.
      * @return whether it was able to move successfully.
      */
-    public boolean moveY(int ySpeed)
+    public boolean moveNetForceY(int ySpeed)
     {
-        if (this.vertical_net_force > TERMINAL_VELOCITY)
+        if (this.vertical_net_force > 0 && this.vertical_net_force > TERMINAL_VELOCITY)
             this.vertical_net_force = TERMINAL_VELOCITY;
+        else if (this.vertical_net_force < 0 && this.vertical_net_force < -TERMINAL_VELOCITY)
+            this.vertical_net_force = -TERMINAL_VELOCITY;
 
         for (GameObject o : EntityManager.getAllGameObjects())
         {
@@ -169,7 +227,53 @@ public abstract class GameObject extends Entity
 
             if (collider != null)
             {
-                return false;
+                if (collider.getType() == Collider.CollisionType.TOP || collider.getType() == Collider.CollisionType.BOTTOM)
+                {
+                    // onCollisionStay
+                    if (this.getY() == collider.gameObject.getY() - this.getHeight() + 1 ||
+                            this.getY() == collider.gameObject.getY() + collider.gameObject.getHeight() - 1)
+                    {
+                        onCollisionStay(collider);
+
+                        if (ySpeed > 0 && collider.getType() == Collider.CollisionType.TOP)
+                        {
+                            vertical_net_force = 0;
+                        }
+                        else if (ySpeed < 0 && collider.getType() == Collider.CollisionType.BOTTOM)
+                        {
+                            vertical_net_force = 0;
+                        }
+                    }
+                    // onCollision
+                    else if (ySpeed > 0 && collider.getType() == Collider.CollisionType.TOP)
+                    {
+                        this.setY(collider.gameObject.getY() - this.getHeight() + 1);
+                        vertical_net_force = 0;
+                        onCollision(collider);
+                        collisions.add(collider);
+                    }
+                    else if (ySpeed < 0 && collider.getType() == Collider.CollisionType.BOTTOM)
+                    {
+                        this.setY(collider.gameObject.getY() + collider.gameObject.getHeight() - 1);
+                        vertical_net_force = 0;
+                        onCollision(collider);
+                        collisions.add(collider);
+                    }
+
+                    return false;
+                }
+            }
+            // onCollisionExit
+            else
+            {
+                for (Collider c : collisions)
+                {
+                    if (c.gameObject == o)
+                    {
+                        onCollisionExit(o);
+                        collisions.remove(c);
+                    }
+                }
             }
         }
 
@@ -179,13 +283,62 @@ public abstract class GameObject extends Entity
     }
 
     /**
+     * User move method across x-axis
+     *
+     * @param speed at which it will move
+     */
+    public void moveX(int speed, char leftBtn, char rightBtn)
+    {
+        if (KeyManager.isHeld(leftBtn))
+            horizontal_net_force = -speed;
+        else if (KeyManager.isHeld(rightBtn))
+            horizontal_net_force = speed;
+
+        if (KeyManager.onRelease(leftBtn) || KeyManager.onRelease(rightBtn))
+            horizontal_net_force = 0;
+    }
+
+    public void moveX(int speed, int leftKeyCode, int rightKeyCode)
+    {
+        if (KeyManager.isHeld(leftKeyCode))
+            horizontal_net_force = -speed;
+        else if (KeyManager.isHeld(rightKeyCode))
+            horizontal_net_force = speed;
+
+        if (KeyManager.onRelease(leftKeyCode) || KeyManager.onRelease(rightKeyCode))
+            horizontal_net_force = 0;
+    }
+
+    public void moveY(int speed, char upBtn, char downBtn)
+    {
+        if (KeyManager.isHeld(upBtn))
+            vertical_net_force = -speed;
+        else if (KeyManager.isHeld(downBtn))
+            vertical_net_force = speed;
+
+        if (KeyManager.onRelease(downBtn) || KeyManager.onRelease(upBtn))
+            vertical_net_force = 0;
+    }
+
+    public void moveY(int speed, int upKeyCode, int downKeyCode)
+    {
+        if (KeyManager.isHeld(upKeyCode))
+            vertical_net_force = -speed;
+        else if (KeyManager.isHeld(downKeyCode))
+            vertical_net_force = speed;
+
+        if (KeyManager.onPress(downKeyCode) || KeyManager.onRelease(upKeyCode))
+            vertical_net_force = 0;
+    }
+
+    /**
      * Moves object on both x and y-axis according to values
      * stored in the parameters.
      */
     public void move(int xSpeed, int ySpeed)
     {
-        moveX(xSpeed);
-        moveY(ySpeed);
+        moveNetForceX(xSpeed);
+        moveNetForceY(ySpeed);
     }
 
     /**
@@ -194,8 +347,8 @@ public abstract class GameObject extends Entity
      */
     public void move(Vec2 vec2)
     {
-        moveX((int) vec2.a());
-        moveY((int) vec2.b());
+        moveNetForceX((int) vec2.a());
+        moveNetForceY((int) vec2.b());
     }
 
     /**
@@ -228,7 +381,7 @@ public abstract class GameObject extends Entity
     {
         this.vertical_net_force += GRAVITATIONAL_ACCELERATION;
 
-        if (!this.moveY((int) this.vertical_net_force))
+        if (!this.moveNetForceY((int) this.vertical_net_force))
         {
             GRAVITATIONAL_ACCELERATION = 0;
         }
@@ -237,7 +390,7 @@ public abstract class GameObject extends Entity
     protected void addForce(float x, float y)
     {
         this.horizontal_net_force += x;
-        this.vertical_net_force += y;
+        this.vertical_net_force -= y;
     }
 
     protected void addForce(Vec2 force)

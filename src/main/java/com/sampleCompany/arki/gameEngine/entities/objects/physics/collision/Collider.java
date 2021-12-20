@@ -13,7 +13,7 @@ import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
  */
 @VersionInfo(
         version = "2.1",
-        releaseDate = "11/24/2021",
+        releaseDate = "12/20/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -27,10 +27,18 @@ public class Collider
         TOP,
         BOTTOM,
         LEFT,
-        RIGHT
+        RIGHT,
+        UNKNOWN
     }
 
+    /**
+     * Type of collision
+     */
     public CollisionType type;
+
+    /**
+     * Game object being collided with
+     */
     public GameObject gameObject;
 
     public Collider(GameObject gameObject, CollisionType type)
@@ -38,6 +46,8 @@ public class Collider
         this.gameObject = gameObject;
         this.type = type;
     }
+
+    // Getters
 
     public CollisionType getType()
     {

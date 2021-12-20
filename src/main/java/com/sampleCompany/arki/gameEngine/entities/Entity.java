@@ -15,7 +15,7 @@ import java.awt.*;
  */
 @VersionInfo(
         version = "2.1",
-        releaseDate = "11/24/2021",
+        releaseDate = "12/20/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -52,6 +52,7 @@ public abstract class Entity
         this.bounds = new Rectangle(getWorldX(), getWorldY(), width, height);
 
         setX(getX());
+        setY(getY());
 
         awake();
     }
@@ -67,6 +68,7 @@ public abstract class Entity
         this.bounds = new Rectangle(getWorldX(), getWorldY(), width, height);
 
         setX(getX());
+        setY(getY());
 
         awake();
     }
@@ -82,6 +84,7 @@ public abstract class Entity
         this.bounds = new Rectangle(getWorldX(), getWorldY(), width, height);
 
         setX(getX());
+        setY(getY());
 
         awake();
     }
@@ -97,6 +100,7 @@ public abstract class Entity
         this.bounds = new Rectangle(getWorldX(), getWorldY(), width, height);
 
         setX(getX());
+        setY(getY());
 
         awake();
     }
@@ -137,7 +141,7 @@ public abstract class Entity
             for (GameObject o : EntityManager.getAllGameObjects())
             {
                 // Invoke onCollisionExit to object being destroyed
-                o.predictCollision((GameObject) this);
+                o.move(0, 0);
             }
         }
 

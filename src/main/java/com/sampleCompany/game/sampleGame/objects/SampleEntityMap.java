@@ -14,10 +14,10 @@ public class SampleEntityMap extends EntityMap
         Random r = new Random();
 
         addEntity(new SampleObjects("Base Creature", "baseCreature1", 400, 50, 25, 25));
-        addEntity(new SampleObjects("Base Creature", "baseCreature2", Reference.displayWidth - 400, 25, 25, 25));
-        addEntity(new SampleObjects("Base Creature", "baseCreature3", Reference.displayWidth - 200, 100, 25, 25));
+        addEntity(new SampleObjects("Base Creature", "baseCreature2", 400, 0, 25, 25));
+        //addEntity(new SampleObjects("Base Creature", "baseCreature3", Reference.displayWidth - 200, 100, 25, 25));
 
-        addEntity(new SampleFloor("Sample Floor", "sampleFloor", 0, 700, Reference.displayWidth, 50, true));
+        addEntity(new SampleFloor("Sample Floor", "sampleFloor", 0, 400, Reference.displayWidth, 25, true));
     }
 
 }

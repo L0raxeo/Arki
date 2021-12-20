@@ -40,10 +40,7 @@ public class SampleObjects extends GameObject
 
         if (unlocalizedName.equals("baseCreature1"))
         {
-            if (KeyManager.isHeld(KeyEvent.VK_LEFT))
-                moveX(-2);
-            if (KeyManager.isHeld(KeyEvent.VK_RIGHT))
-                moveX(2);
+            moveX(3, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
 
             if (KeyManager.onPress(KeyEvent.VK_UP))
                 addForce(0, 10);
@@ -52,15 +49,12 @@ public class SampleObjects extends GameObject
         }
         else if (unlocalizedName.equals("baseCreature2"))
         {
-            if (KeyManager.isHeld('a'))
-                moveX(-2);
-            if (KeyManager.isHeld('d'))
-                moveX(2);
+            moveX(3, 'a', 'd');
 
             if (KeyManager.onPress('w'))
                 addForce(0, 10);
-            if (KeyManager.onPress('s'))
-                addForce(0, -10);
+            //if (KeyManager.onPress('s'))
+            //    addForce(0, -10);
         }
     }
 
@@ -77,7 +71,7 @@ public class SampleObjects extends GameObject
     }
 
     @Override
-    public void onCollisionExit(Collider collider)
+    public void onCollisionExit(GameObject gameObject)
     {
         System.out.println("exited");
     }

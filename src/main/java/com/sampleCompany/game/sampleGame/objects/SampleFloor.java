@@ -19,6 +19,9 @@ public class SampleFloor extends GameObject
     {
         if (KeyManager.onPress(KeyEvent.VK_BACK_SPACE))
             this.destroy();
+
+        if (KeyManager.onPress('s'))
+            setY(getY() + 300);
     }
 
     @Override
