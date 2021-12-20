@@ -46,7 +46,6 @@ public final class Engine implements Runnable
     private boolean running = false;
 
     // Game
-
     public static SceneManager sceneManager;
     public static EntityManager entityManager;
 
