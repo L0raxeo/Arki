@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * @author Lorcan A. Cheng
  */
 @VersionInfo(
-        version = "2.1",
+        version = "2.2",
         releaseDate = "12/20/2021",
         since = "1.0",
         contributors = {
@@ -209,7 +209,6 @@ public abstract class GameObject extends Entity
         return true;
     }
 
-    // PROBLEM: SANDWICHED OBJECTS COLLIDE AND MOVE POSITIONS ON BOTH TOP AND BOTTOM
     /**
      * Moves object according to speed parameter on y-axis.
      * @return whether it was able to move successfully.
@@ -327,7 +326,7 @@ public abstract class GameObject extends Entity
         else if (KeyManager.isHeld(downKeyCode))
             vertical_net_force = speed;
 
-        if (KeyManager.onPress(downKeyCode) || KeyManager.onRelease(upKeyCode))
+        if (KeyManager.onRelease(downKeyCode) || KeyManager.onRelease(upKeyCode))
             vertical_net_force = 0;
     }
 
