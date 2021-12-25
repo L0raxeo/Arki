@@ -1,7 +1,7 @@
 package com.sampleCompany.arki.gameEngine.display;
 
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
-import com.sampleCompany.game.sampleGame.Reference;
+import com.sampleCompany.arki.gameEngine.misc.Reference;
 
 import javax.swing.*;
 import java.awt.*;

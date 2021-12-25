@@ -5,7 +5,7 @@ import com.sampleCompany.arki.gameEngine.display.Display;
 import com.sampleCompany.arki.gameEngine.input.keyboard.KeyManager;
 import com.sampleCompany.arki.gameEngine.input.mouse.MouseManager;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
-import com.sampleCompany.game.sampleGame.Reference;
+import com.sampleCompany.arki.gameEngine.misc.Reference;
 
 /**
  * Manages all keys, and can be used to

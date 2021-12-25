@@ -1,3 +1,7 @@
-name=Sample Game
-gameid=sampleGame
+name=Default Game
+gameid=defaultGame
 version=1.0
+displayWidth=1080
+displayHeight=720
+targetFPS=60
+resizeable=true

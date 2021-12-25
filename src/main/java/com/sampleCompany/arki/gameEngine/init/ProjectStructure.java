@@ -2,7 +2,7 @@ package com.sampleCompany.arki.gameEngine.init;
 
 import com.sampleCompany.arki.gameEngine.utils.FileLoader;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
-import com.sampleCompany.game.sampleGame.Reference;
+import com.sampleCompany.arki.gameEngine.misc.Reference;
 
 import java.io.IOException;
 
@@ -34,16 +34,6 @@ public class ProjectStructure implements Initializer
     public void preInit()
     {
         FileLoader.createDir("libs/resources");
-    }
-
-    /**
-     * Creates specific resources and assets, within the directories
-     * created in the preInit() method.
-     */
-    @Override
-    public void init() throws IOException
-    {
-        FileLoader.writeFile("libs/resources/game_info.txt", "name=" + Reference.NAME, "gameid=" + Reference.GAMEID, "version=" + Reference.VERSION);
     }
 
 }

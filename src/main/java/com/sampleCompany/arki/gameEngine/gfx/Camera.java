@@ -3,7 +3,7 @@ package com.sampleCompany.arki.gameEngine.gfx;
 import com.sampleCompany.arki.gameEngine.entities.Entity;
 import com.sampleCompany.arki.gameEngine.entities.objects.GameObject;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
-import com.sampleCompany.game.sampleGame.Reference;
+import com.sampleCompany.arki.gameEngine.misc.Reference;
 
 @VersionInfo(
         version = "1.0",

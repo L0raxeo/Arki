@@ -1,7 +1,7 @@
 package com.sampleCompany.game.sampleGame.objects;
 
 import com.sampleCompany.arki.gameEngine.entities.EntityMap;
-import com.sampleCompany.game.sampleGame.Reference;
+import com.sampleCompany.arki.gameEngine.misc.Reference;
 
 import java.util.Random;
 
