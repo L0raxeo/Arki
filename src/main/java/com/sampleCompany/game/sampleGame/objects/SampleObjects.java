@@ -42,7 +42,8 @@ public class SampleObjects extends GameObject
         {
             moveX(3, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT);
 
-            moveY(3, KeyEvent.VK_UP, KeyEvent.VK_DOWN);
+            if (KeyManager.onPress(KeyEvent.VK_UP))
+                addForce(0, 10);
         }
         else if (unlocalizedName.equals("baseCreature2"))
         {

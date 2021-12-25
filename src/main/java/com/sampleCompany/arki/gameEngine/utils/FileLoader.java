@@ -1,6 +1,7 @@
 package com.sampleCompany.arki.gameEngine.utils;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.Objects;
  */
 @VersionInfo(
         version = "2.1",
-        releaseDate = "12/5/2021",
+        releaseDate = "12/25/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -285,6 +286,20 @@ public class FileLoader
         catch (IOException e)
         {
             e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static Font loadFont(String path, float size){
+        try
+        {
+            return Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(Font.PLAIN, size);
+        }
+        catch (FontFormatException | IOException e)
+        {
+            e.printStackTrace();
+            System.exit(1);
         }
 
         return null;
