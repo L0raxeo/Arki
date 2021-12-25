@@ -291,7 +291,8 @@ public class FileLoader
         return null;
     }
 
-    public static Font loadFont(String path, float size){
+    public static Font loadFont(String path, float size)
+    {
         try
         {
             return Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(Font.PLAIN, size);

@@ -27,7 +27,7 @@ import java.util.Set;
  */
 @VersionInfo (
         version = "1.0",
-        releaseDate = "11/20/2021",
+        releaseDate = "12/25/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -123,6 +123,12 @@ public final class Engine implements Runnable
         // clear screen
         g.clearRect(0, 0, display.getFrame().getWidth(), display.getFrame().getHeight());
         // draw here
+
+        if (SceneManager.getCurrentScene().backgroundColor != null)
+        {
+            g.setColor(SceneManager.getCurrentScene().backgroundColor);
+            g.fillRect(0, 0, display.getFrame().getWidth(), display.getFrame().getHeight());
+        }
 
         sceneManager.render(g);
 

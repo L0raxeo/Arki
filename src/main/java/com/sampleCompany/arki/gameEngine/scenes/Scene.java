@@ -13,7 +13,7 @@ import java.awt.*;
  */
 @VersionInfo(
         version = "2.1",
-        releaseDate = "12/5/2021",
+        releaseDate = "12/25/2021",
         since = "1.0",
         contributors = {
                 "Lorcan Andrew Cheng"
@@ -50,6 +50,8 @@ public abstract class Scene
     public boolean sideView;
     public double gravitationalConstant;
 
+    public Color backgroundColor = null;
+
     // Class
     public Scene()
     {
@@ -57,22 +59,9 @@ public abstract class Scene
         id = this.getClass().getAnnotation(SceneInfo.class).sceneID();
         sideView = this.getClass().getAnnotation(SceneInfo.class).sideView();
         gravitationalConstant = this.getClass().getAnnotation(SceneInfo.class).gravitationalConstant();
-
-        setupView();
     }
 
     // Initializers
-
-    /**
-     * If the current scene is a side view then falling gravity applies.
-     */
-    private void setupView()
-    {
-        if (sideView)
-        {
-
-        }
-    }
 
     /**
      * Initializer that is invoked when the
@@ -111,5 +100,10 @@ public abstract class Scene
      * Renders all objects and components in scene
      */
     public abstract void render(Graphics g);
+
+    public void setBackgroundColor(Color color)
+    {
+        this.backgroundColor = color;
+    }
 
 }
