@@ -12,3 +12,20 @@ Main Features:
 - Easy application window setup (width, height, position, additional attibutes... etc)
 - Camera system
 - Initialization system
+
+# Download and Setup
+
+The download and setup process for Arki is extremely simple!
+
+Setup for IntelliJ on Windows Video Youtube Tutorial:
+(coming soon)
+
+Setup for IntelliJ on MacOS Video Youtube Tutorial:
+(coming soon)
+
+Written Guide:
+1. Fork Arki GitHub repository
+2. Open IntelliJ
+3. Get project from VCS- In the projects list, click the button on the top right corner labeled "Get from VCS"
+4. Selected forked version of Arki
+5. Start game developing!
