@@ -2,9 +2,6 @@ package com.sampleCompany.arki.gameEngine.init;
 
 import com.sampleCompany.arki.gameEngine.utils.FileLoader;
 import com.sampleCompany.arki.gameEngine.utils.VersionInfo;
-import com.sampleCompany.arki.gameEngine.misc.Reference;
-
-import java.io.IOException;
 
 /**
  * Loads the general project structure, including

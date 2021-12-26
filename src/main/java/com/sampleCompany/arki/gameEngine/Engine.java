@@ -63,11 +63,13 @@ public final class Engine implements Runnable
         // Get the package of the game (not game engine) by hierarchy instead of name.
         String[] splitPackages = this.getClass().getPackageName().split("\\.");
         StringBuilder rootPackage = new StringBuilder();
+
         for (int i = 0; i < 2; i++)
         {
             rootPackage.append(splitPackages[i]).append(".");
         }
-        rootPackage.deleteCharAt(17);
+
+        rootPackage.deleteCharAt(rootPackage.length() - 1);
         // Scans specified package (defined above) for Scenes.
         Reflections reflections = new Reflections(rootPackage.toString());
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Init.class);
@@ -124,7 +126,7 @@ public final class Engine implements Runnable
         g.clearRect(0, 0, display.getFrame().getWidth(), display.getFrame().getHeight());
         // draw here
 
-        if (SceneManager.getCurrentScene().backgroundColor != null)
+        if (SceneManager.getCurrentScene() != null && SceneManager.getCurrentScene().backgroundColor != null)
         {
             g.setColor(SceneManager.getCurrentScene().backgroundColor);
             g.fillRect(0, 0, display.getFrame().getWidth(), display.getFrame().getHeight());
