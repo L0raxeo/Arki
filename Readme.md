@@ -24,7 +24,7 @@ Setup for IntelliJ on MacOS Video Youtube Tutorial:
 (coming soon)
 
 Written Guide:
-1. Fork Arki GitHub repository
+1. Fork (click "use template" button) Arki GitHub repository
 2. Open IntelliJ
 3. Get project from VCS- In the projects list, click the button on the top right corner labeled "Get from VCS"
 4. Selected forked version of Arki
