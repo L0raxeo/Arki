@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: com.sampleCompany.arki.gameEngine.init.Launcher
+Main-Class: com.test.arki.gameEngine.init.Launcher
 

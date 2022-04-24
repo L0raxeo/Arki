@@ -35,7 +35,6 @@ public abstract class Scene
      *      {
 
      *      }
-
      *      @Override
      *      public void render(Graphics g)
      *      {

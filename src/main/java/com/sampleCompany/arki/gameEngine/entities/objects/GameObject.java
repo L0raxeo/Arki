@@ -394,7 +394,8 @@ public abstract class GameObject extends Entity
 
     protected void addForce(Vec2 force)
     {
-
+        this.horizontal_net_force += force.a();
+        this.vertical_net_force -= force.b();
     }
 
 }

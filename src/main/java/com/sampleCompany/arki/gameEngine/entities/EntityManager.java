@@ -40,7 +40,7 @@ public final class EntityManager implements Initializer
     /**
      * Used to sort render order of 2D objects that overlay one and other.
      */
-    private final Comparator<Entity> renderSorter = Comparator.comparingInt(a -> (int) a.getWorldY() + a.getHeight());
+    private final Comparator<Entity> renderSorter = Comparator.comparingInt(a -> a.getWorldY() + a.getHeight());
 
     /**
      * Camera object

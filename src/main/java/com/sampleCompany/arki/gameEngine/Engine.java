@@ -71,6 +71,7 @@ public final class Engine implements Runnable
 
         rootPackage.deleteCharAt(rootPackage.length() - 1);
         // Scans specified package (defined above) for Scenes.
+        System.out.println(rootPackage);
         Reflections reflections = new Reflections(rootPackage.toString());
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Init.class);
 
